@@ -1,0 +1,12 @@
+{
+  "scripts": [
+    "execution/emails_fetch.py",
+    "execution/emails_parse.py",
+    "execution/emails_filter.py",
+    "execution/context_fetch.py",
+    "execution/context_search.py",
+    "execution/posts_generate.py",
+    "execution/posts_save.py",
+    "execution/emails_organize.py"
+  ]
+}

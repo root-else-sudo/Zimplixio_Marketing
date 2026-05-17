@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Zimplixio — Brand Style Guide</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=DM+Serif+Display&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --indigo-50: #eef2ff;
+      --indigo-100: #e0e7ff;
+      --indigo-200: #c7d2fe;
+      --indigo-300: #a5b4fc;
+      --indigo-400: #818cf8;
+      --indigo-500: #6366f1;
+      --indigo-600: #4f46e5;
+      --indigo-700: #4338ca;
+      --indigo-800: #3730a3;
+      --indigo-900: #312e81;
+
+      --navy-900: #060c18;
+      --navy-800: #0f2044;
+      --navy-700: #162d4a;
+      --navy-600: #1e3a5f;
+
+      --gray-50: #f9fafb;
+      --gray-100: #f3f4f6;
+      --gray-200: #e5e7eb;
+      --gray-300: #d1d5db;
+      --gray-400: #9ca3af;
+      --gray-500: #6b7280;
+      --gray-600: #4b5563;
+      --gray-700: #374151;
+      --gray-800: #1f2937;
+      --gray-900: #111827;
+
+      --green-400: #4ade80;
+      --green-500: #22c55e;
+      --amber-400: #fbbf24;
+      --red-400: #f87171;
+
+      --font-heading: 'Poppins', ui-sans-serif, system-ui, sans-serif;
+      --font-body: 'DM Sans', ui-sans-serif, system-ui, sans-serif;
+      --font-serif: 'DM Serif Display', Georgia, serif;
+
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --radius-lg: 16px;
+      --radius-xl: 20px;
+      --radius-full: 9999px;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-body);
+      background: var(--gray-50);
+      color: var(--gray-900);
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    /* ── Layout ── */
+    .guide-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 32px 120px;
+    }
+
+    /* ── Cover ── */
+    .cover {
+      background: linear-gradient(135deg, #1e3a5f 0%, #0f2044 30%, #060c18 50%, #162d4a 70%, #0f2044 100%);
+      background-size: 300% 300%;
+      animation: heroShift 14s ease infinite;
+      padding: 96px 48px;
+      margin-bottom: 80px;
+      position: relative;
+      overflow: hidden;
+    }
+    @keyframes heroShift {
+      0%   { background-position: 0% 50%; }
+      50%  { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    .cover-blur-1 {
+      position: absolute; top: -60px; right: -60px;
+      width: 300px; height: 300px;
+      background: rgba(99,102,241,0.12);
+      border-radius: 50%; filter: blur(60px);
+    }
+    .cover-blur-2 {
+      position: absolute; bottom: -80px; left: 20%;
+      width: 400px; height: 400px;
+      background: rgba(79,70,229,0.08);
+      border-radius: 50%; filter: blur(80px);
+    }
+    .cover-inner { position: relative; z-index: 2; }
+    .cover-eyebrow {
+      font-family: var(--font-body);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--indigo-300);
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .cover-eyebrow::before {
+      content: '';
+      display: block;
+      width: 28px; height: 2px;
+      background: var(--indigo-400);
+      border-radius: 1px;
+    }
+    .cover-logo {
+      height: 52px;
+      width: auto;
+      margin-bottom: 28px;
+      filter: brightness(0) invert(1);
+    }
+    .cover-title {
+      font-family: var(--font-heading);
+      font-size: clamp(36px, 5vw, 58px);
+      font-weight: 800;
+      color: #fff;
+      line-height: 1.1;
+      margin-bottom: 16px;
+      letter-spacing: -0.02em;
+    }
+    .cover-subtitle {
+      font-family: var(--font-body);
+      font-size: 17px;
+      color: rgba(255,255,255,0.6);
+      font-weight: 300;
+      max-width: 480px;
+    }
+    .cover-meta {
+      margin-top: 48px;
+      display: flex;
+      gap: 32px;
+      flex-wrap: wrap;
+    }
+    .cover-meta-item { color: rgba(255,255,255,0.45); font-size: 12px; }
+    .cover-meta-item strong { color: rgba(255,255,255,0.75); display: block; font-size: 13px; margin-bottom: 2px; }
+
+    /* ── Section chrome ── */
+    .section { margin-bottom: 80px; }
+    .section-header {
+      display: flex;
+      align-items: baseline;
+      gap: 16px;
+      margin-bottom: 36px;
+      padding-bottom: 16px;
+      border-bottom: 1.5px solid var(--gray-200);
+    }
+    .section-number {
+      font-family: var(--font-heading);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: var(--indigo-400);
+      text-transform: uppercase;
+    }
+    .section-title {
+      font-family: var(--font-heading);
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--gray-900);
+      letter-spacing: -0.01em;
+    }
+
+    /* ── Color swatches ── */
+    .swatch-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 12px; }
+    .swatch {
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      border: 1px solid var(--gray-200);
+    }
+    .swatch-color { height: 80px; }
+    .swatch-info { padding: 10px 12px; background: #fff; }
+    .swatch-name { font-size: 12px; font-weight: 600; color: var(--gray-800); margin-bottom: 3px; }
+    .swatch-hex { font-size: 11px; color: var(--gray-500); font-family: 'Courier New', monospace; }
+
+    .swatch-row { display: flex; gap: 6px; margin-bottom: 8px; }
+    .swatch-pill {
+      flex: 1;
+      height: 40px;
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: flex-end;
+      padding: 4px 6px;
+      font-size: 10px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.8);
+    }
+    .swatch-pill.dark { color: var(--gray-700); }
+
+    .palette-group { margin-bottom: 32px; }
+    .palette-label { font-size: 12px; font-weight: 600; color: var(--gray-500); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 10px; }
+
+    /* ── Typography ── */
+    .type-sample { background: #fff; border: 1px solid var(--gray-200); border-radius: var(--radius-lg); padding: 28px 32px; margin-bottom: 12px; }
+    .type-meta { font-size: 11px; color: var(--gray-400); font-family: 'Courier New', monospace; margin-top: 8px; }
+    .type-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+    /* ── Spacing ── */
+    .spacing-grid { display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-end; }
+    .spacing-item { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+    .spacing-bar { background: var(--indigo-500); border-radius: 3px; width: 32px; }
+    .spacing-label { font-size: 11px; color: var(--gray-500); font-family: 'Courier New', monospace; }
+
+    /* ── Radii ── */
+    .radius-grid { display: flex; flex-wrap: wrap; gap: 16px; align-items: center; }
+    .radius-item { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+    .radius-box { width: 64px; height: 48px; background: var(--indigo-100); border: 2px solid var(--indigo-300); }
+    .radius-label { font-size: 11px; color: var(--gray-500); font-family: 'Courier New', monospace; text-align: center; }
+
+    /* ── Components ── */
+    .component-row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin-bottom: 24px; }
+    .component-label { font-size: 11px; font-weight: 600; color: var(--gray-400); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px; }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-family: var(--font-body); font-weight: 600;
+      border: none; cursor: pointer;
+      transition: all 0.15s ease;
+      text-decoration: none;
+    }
+    .btn-lg { padding: 14px 28px; font-size: 15px; border-radius: var(--radius-md); }
+    .btn-md { padding: 10px 20px; font-size: 14px; border-radius: var(--radius-md); }
+    .btn-sm { padding: 7px 14px; font-size: 12px; border-radius: var(--radius-sm); }
+
+    .btn-primary {
+      background: var(--indigo-600); color: #fff;
+      box-shadow: 0 4px 14px -2px rgba(79,70,229,0.35);
+    }
+    .btn-primary:hover { background: var(--indigo-700); transform: translateY(-1px); box-shadow: 0 6px 20px -2px rgba(79,70,229,0.45); }
+
+    .btn-secondary {
+      background: transparent; color: var(--indigo-600);
+      border: 1.5px solid var(--indigo-300);
+    }
+    .btn-secondary:hover { background: var(--indigo-50); border-color: var(--indigo-400); }
+
+    .btn-ghost { background: transparent; color: var(--gray-700); }
+    .btn-ghost:hover { background: var(--gray-100); }
+
+    .btn-dark {
+      background: var(--navy-800); color: #fff;
+      box-shadow: 0 4px 14px -2px rgba(6,12,24,0.4);
+    }
+    .btn-dark:hover { background: var(--navy-700); transform: translateY(-1px); }
+
+    /* Cards */
+    .card {
+      background: #fff;
+      border: 1px solid var(--gray-200);
+      border-radius: var(--radius-xl);
+      padding: 28px;
+      transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+                  box-shadow 0.35s ease;
+    }
+    .card:hover {
+      transform: translateY(-5px) scale(1.01);
+      box-shadow: 0 16px 48px -8px rgba(79,70,229,0.15), 0 4px 16px -4px rgba(0,0,0,0.06);
+      border-color: rgba(99,102,241,0.2);
+    }
+    .card-dark {
+      background: var(--navy-800);
+      border-color: rgba(255,255,255,0.08);
+      color: #fff;
+    }
+
+    /* Badges */
+    .badge {
+      display: inline-flex; align-items: center;
+      font-size: 11px; font-weight: 600; letter-spacing: 0.04em;
+      padding: 4px 10px; border-radius: var(--radius-full);
+    }
+    .badge-indigo { background: var(--indigo-100); color: var(--indigo-700); }
+    .badge-navy { background: rgba(15,32,68,0.1); color: var(--navy-800); }
+    .badge-green { background: #dcfce7; color: #15803d; }
+    .badge-amber { background: #fef3c7; color: #92400e; }
+    .badge-dark-indigo { background: rgba(99,102,241,0.2); color: var(--indigo-300); }
+
+    /* Section label */
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 11px; font-weight: 600; letter-spacing: 0.16em;
+      text-transform: uppercase; color: var(--indigo-600);
+      margin-bottom: 12px;
+    }
+    .eyebrow::before {
+      content: ''; display: block;
+      width: 20px; height: 2px;
+      background: currentColor; border-radius: 1px;
+    }
+    .eyebrow-light { color: var(--indigo-300); }
+
+    /* Input */
+    .input-field {
+      width: 100%; padding: 10px 14px;
+      border: 1.5px solid var(--gray-300);
+      border-radius: var(--radius-md);
+      font-family: var(--font-body); font-size: 14px;
+      color: var(--gray-900); background: #fff;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      outline: none;
+    }
+    .input-field:focus {
+      border-color: var(--indigo-500);
+      box-shadow: 0 0 0 3px rgba(99,102,241,0.15);
+    }
+    .input-field::placeholder { color: var(--gray-400); }
+
+    /* CTA block */
+    .cta-block {
+      background: linear-gradient(135deg, #1e3a5f 0%, #060c18 60%, #0f2044 100%);
+      border-radius: var(--radius-xl);
+      padding: 48px;
+      position: relative;
+      overflow: hidden;
+    }
+    .cta-blur {
+      position: absolute; right: -40px; top: -40px;
+      width: 200px; height: 200px;
+      background: rgba(79,70,229,0.15);
+      border-radius: 50%; filter: blur(40px);
+    }
+
+    /* Logo section */
+    .logo-showcase {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .logo-tile {
+      border-radius: var(--radius-lg);
+      padding: 48px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .logo-tile img { height: 44px; width: auto; }
+    .logo-tile-light { background: #fff; border: 1px solid var(--gray-200); }
+    .logo-tile-dark { background: var(--navy-900); }
+    .logo-tile-indigo { background: var(--indigo-600); }
+    .logo-tile-gray { background: var(--gray-100); border: 1px solid var(--gray-200); }
+
+    .logo-text-light {
+      font-family: var(--font-heading);
+      font-size: 28px; font-weight: 800;
+      color: var(--indigo-700); letter-spacing: -0.02em;
+    }
+    .logo-text-dark {
+      font-family: var(--font-heading);
+      font-size: 28px; font-weight: 800;
+      color: #fff; letter-spacing: -0.02em;
+    }
+
+    /* Motion strip */
+    .motion-card {
+      background: #fff;
+      border: 1px solid var(--gray-200);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      text-align: center;
+    }
+    .motion-demo {
+      width: 48px; height: 48px;
+      background: var(--indigo-600);
+      border-radius: var(--radius-md);
+      margin: 0 auto 12px;
+    }
+    .motion-card:hover .motion-demo-hover {
+      transform: translateY(-6px) scale(1.05);
+      box-shadow: 0 12px 32px -4px rgba(79,70,229,0.35);
+    }
+    .motion-demo-hover {
+      transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+                  box-shadow 0.35s ease;
+    }
+    .motion-title { font-size: 13px; font-weight: 600; color: var(--gray-800); margin-bottom: 4px; }
+    .motion-desc { font-size: 12px; color: var(--gray-400); }
+    .motion-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; }
+
+    /* Divider */
+    .divider { height: 1px; background: var(--gray-200); margin: 48px 0; }
+
+    /* Responsive */
+    @media (max-width: 700px) {
+      .logo-showcase { grid-template-columns: 1fr; }
+      .type-grid { grid-template-columns: 1fr; }
+      .cover { padding: 60px 24px; }
+      .guide-container { padding: 0 20px 80px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Cover -->
+<div class="cover">
+  <div class="cover-blur-1"></div>
+  <div class="cover-blur-2"></div>
+  <div class="cover-inner guide-container">
+    <div class="cover-eyebrow">Brand Identity System</div>
+    <div style="font-family:'Poppins',sans-serif; font-size:32px; font-weight:800; color:#fff; letter-spacing:-0.02em; margin-bottom:28px;">Zimplixio</div>
+    <h1 class="cover-title">Brand Style Guide</h1>
+    <p class="cover-subtitle">Visual standards, design tokens, and component patterns for Zimplixio's marketing and product surfaces.</p>
+    <div class="cover-meta">
+      <div class="cover-meta-item"><strong>Version</strong>1.0 — April 2026</div>
+      <div class="cover-meta-item"><strong>Audience</strong>Marketing, Design, Engineering</div>
+      <div class="cover-meta-item"><strong>Positioning</strong>Enterprise expertise simplified for SMBs</div>
+    </div>
+  </div>
+</div>
+
+<div class="guide-container">
+
+  <!-- 01 Logo -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-number">01</span>
+      <h2 class="section-title">Logo</h2>
+    </div>
+    <div class="logo-showcase">
+      <div class="logo-tile logo-tile-light">
+        <span class="logo-text-light">Zimplixio</span>
+      </div>
+      <div class="logo-tile logo-tile-dark">
+        <span class="logo-text-dark">Zimplixio</span>
+      </div>
+      <div class="logo-tile logo-tile-indigo">
+        <span class="logo-text-dark">Zimplixio</span>
+      </div>
+      <div class="logo-tile logo-tile-gray">
+        <span class="logo-text-light">Zimplixio</span>
+      </div>
+    </div>
+    <div style="margin-top:16px; padding:16px 20px; background:#fffbeb; border-radius:var(--radius-md); border:1px solid #fde68a; font-size:13px; color:#78350f;">
+      <strong>Usage rule:</strong> Always use the white version on dark or indigo backgrounds. Use the full-color version on light/neutral backgrounds. Never stretch, recolor, or place on busy imagery without a dark scrim.
+    </div>
+  </div>
+
+  <!-- 02 Color Palette -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-number">02</span>
+      <h2 class="section-title">Color Palette</h2>
+    </div>
+
+    <div class="palette-group">
+      <div class="palette-label">Indigo — Primary</div>
+      <div class="swatch-row">
+        <div class="swatch-pill" style="background:#eef2ff;" data-shade="50"><span style="color:var(--gray-500)">50</span></div>
+        <div class="swatch-pill" style="background:#e0e7ff;" data-shade="100"><span style="color:var(--gray-500)">100</span></div>
+        <div class="swatch-pill" style="background:#c7d2fe;" data-shade="200"><span style="color:var(--gray-600)">200</span></div>
+        <div class="swatch-pill" style="background:#a5b4fc;" data-shade="300">300</div>
+        <div class="swatch-pill" style="background:#818cf8;" data-shade="400">400</div>
+        <div class="swatch-pill" style="background:#6366f1;" data-shade="500">500</div>
+        <div class="swatch-pill" style="background:#4f46e5; font-weight:800; outline:3px solid #4f46e5; outline-offset:2px;" data-shade="600">600 ★</div>
+        <div class="swatch-pill" style="background:#4338ca;" data-shade="700">700</div>
+        <div class="swatch-pill" style="background:#3730a3;" data-shade="800">800</div>
+        <div class="swatch-pill" style="background:#312e81;" data-shade="900">900</div>
+      </div>
+      <p style="font-size:12px; color:var(--gray-500); margin-top:6px;">★ Indigo-600 <code style="font-size:11px;">#4f46e5</code> is the primary brand color — used for CTAs, focus rings, and interactive elements.</p>
+    </div>
+
+    <div class="palette-group">
+      <div class="palette-label">Navy — Hero & Dark Surfaces</div>
+      <div class="swatch-grid" style="grid-template-columns: repeat(4, 1fr);">
+        <div class="swatch">
+          <div class="swatch-color" style="background:#1e3a5f;"></div>
+          <div class="swatch-info"><div class="swatch-name">Navy 600</div><div class="swatch-hex">#1e3a5f</div></div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-color" style="background:#162d4a;"></div>
+          <div class="swatch-info"><div class="swatch-name">Navy 700</div><div class="swatch-hex">#162d4a</div></div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-color" style="background:#0f2044;"></div>
+          <div class="swatch-info"><div class="swatch-name">Navy 800</div><div class="swatch-hex">#0f2044</div></div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-color" style="background:#060c18;"></div>
+          <div class="swatch-info"><div class="swatch-name">Navy 900</div><div class="swatch-hex">#060c18</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="palette-group">
+      <div class="palette-label">Neutrals — Gray</div>
+      <div class="swatch-row">
+        <div class="swatch-pill dark" style="background:#f9fafb; border:1px solid #e5e7eb;">50</div>
+        <div class="swatch-pill dark" style="background:#f3f4f6; border:1px solid #e5e7eb;">100</div>
+        <div class="swatch-pill dark" style="background:#e5e7eb;">200</div>
+        <div class="swatch-pill dark" style="background:#d1d5db;">300</div>
+        <div class="swatch-pill" style="background:#9ca3af;">400</div>
+        <div class="swatch-pill" style="background:#6b7280;">500</div>
+        <div class="swatch-pill" style="background:#4b5563;">600</div>
+        <div class="swatch-pill" style="background:#374151;">700</div>
+        <div class="swatch-pill" style="background:#1f2937;">800</div>
+        <div class="swatch-pill" style="background:#111827;">900</div>
+      </div>
+    </div>
+
+    <div class="palette-group">
+      <div class="palette-label">Semantic</div>
+      <div class="swatch-grid" style="grid-template-columns: repeat(3, 1fr);">
+        <div class="swatch">
+          <div class="swatch-color" style="background:#22c55e;"></div>
+          <div class="swatch-info"><div class="swatch-name">Success</div><div class="swatch-hex">#22c55e</div></div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-color" style="background:#f59e0b;"></div>
+          <div class="swatch-info"><div class="swatch-name">Warning</div><div class="swatch-hex">#f59e0b</div></div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-color" style="background:#ef4444;"></div>
+          <div class="swatch-info"><div class="swatch-name">Error</div><div class="swatch-hex">#ef4444</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Hero gradient sample -->
+    <div class="palette-label" style="margin-top:8px;">Hero Gradient</div>
+    <div style="height:72px; border-radius:var(--radius-lg); background:linear-gradient(135deg,#1e3a5f 0%,#0f2044 30%,#060c18 50%,#162d4a 70%,#0f2044 100%); display:flex; align-items:center; padding:0 24px;">
+      <code style="font-size:12px; color:rgba(255,255,255,0.5);">bg-gradient-to-br from-indigo-700 via-indigo-800 to-gray-900 · custom animated variant in hero-animated-bg</code>
+    </div>
+  </div>
+
+  <!-- 03 Typography -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-number">03</span>
+      <h2 class="section-title">Typography</h2>
+    </div>
+
+    <!-- Heading scale -->
+    <p class="component-label">Heading Scale — Poppins</p>
+    <div class="type-sample">
+      <div style="font-family:'Poppins',sans-serif; font-size:56px; font-weight:800; letter-spacing:-0.03em; line-height:1.05; color:var(--gray-900);">Enterprise expertise,<br/>SMB speed.</div>
+      <div class="type-meta">H1 — Poppins 800 · 56px / 1.05 · tracking -0.03em</div>
+    </div>
+    <div class="type-grid">
+      <div class="type-sample">
+        <div style="font-family:'Poppins',sans-serif; font-size:36px; font-weight:700; letter-spacing:-0.02em; line-height:1.15; color:var(--gray-900);">Our Services</div>
+        <div class="type-meta">H2 — Poppins 700 · 36px / 1.15</div>
+      </div>
+      <div class="type-sample">
+        <div style="font-family:'Poppins',sans-serif; font-size:26px; font-weight:600; letter-spacing:-0.01em; line-height:1.25; color:var(--gray-900);">What We Deliver</div>
+        <div class="type-meta">H3 — Poppins 600 · 26px / 1.25</div>
+      </div>
+      <div class="type-sample">
+        <div style="font-family:'Poppins',sans-serif; font-size:20px; font-weight:600; line-height:1.3; color:var(--gray-900);">Discovery & Strategy</div>
+        <div class="type-meta">H4 — Poppins 600 · 20px / 1.3</div>
+      </div>
+      <div class="type-sample">
+        <div style="font-family:'Poppins',sans-serif; font-size:16px; font-weight:500; line-height:1.4; color:var(--gray-700);">Section heading variant</div>
+        <div class="type-meta">H5 — Poppins 500 · 16px / 1.4</div>
+      </div>
+    </div>
+
+    <div style="margin-top:16px;"></div>
+    <p class="component-label">Body — DM Sans</p>
+    <div class="type-sample">
+      <p style="font-family:'DM Sans',sans-serif; font-size:17px; font-weight:400; line-height:1.7; color:var(--gray-700); max-width:640px;">We bridge the gap between enterprise-grade technology and the agility that small and mid-sized businesses need. From AI adoption strategy to e-commerce optimization, we translate complexity into clear, actionable outcomes.</p>
+      <div class="type-meta">Body Large — DM Sans 400 · 17px / 1.7</div>
+    </div>
+    <div class="type-grid">
+      <div class="type-sample">
+        <p style="font-family:'DM Sans',sans-serif; font-size:15px; line-height:1.65; color:var(--gray-600);">Standard body text for cards, descriptions, and content blocks across all pages.</p>
+        <div class="type-meta">Body — DM Sans 400 · 15px / 1.65</div>
+      </div>
+      <div class="type-sample">
+        <p style="font-family:'DM Sans',sans-serif; font-size:13px; line-height:1.55; color:var(--gray-500);">Small body text for metadata, captions, and supporting information throughout the interface.</p>
+        <div class="type-meta">Body Small — DM Sans 400 · 13px / 1.55</div>
+      </div>
+    </div>
+
+    <div style="margin-top:16px;"></div>
+    <p class="component-label">Eyebrow / Label</p>
+    <div class="type-sample" style="display:flex; gap:32px; flex-wrap:wrap; align-items:center;">
+      <div>
+        <div class="eyebrow">Our Services</div>
+        <div class="type-meta">Light bg — Indigo-600</div>
+      </div>
+      <div style="background:var(--navy-800); padding:16px 20px; border-radius:var(--radius-md);">
+        <div class="eyebrow eyebrow-light">Our Services</div>
+        <div class="type-meta" style="color:rgba(255,255,255,0.3);">Dark bg — Indigo-300</div>
+      </div>
+    </div>
+
+    <div style="margin-top:16px;"></div>
+    <p class="component-label">Serif Accent — DM Serif Display</p>
+    <div class="type-sample">
+      <div style="font-family:'DM Serif Display',serif; font-size:32px; line-height:1.25; color:var(--gray-900);">"Enterprise thinking, human scale."</div>
+      <div class="type-meta">DM Serif Display · 32px — used for pull-quotes and editorial moments</div>
+    </div>
+  </div>
+
+  <!-- 04 Spacing -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-number">04</span>
+      <h2 class="section-title">Spacing & Radii</h2>
+    </div>
+    <p class="component-label">Spacing Scale (Tailwind base-4)</p>
+    <div class="spacing-grid">
+      <div class="spacing-item"><div class="spacing-bar" style="height:4px;"></div><div class="spacing-label">4px</div></div>
+      <div class="spacing-item"><div class="spacing-bar" style="height:8px;"></div><div class="spacing-label">8px</div></div>
+      <div class="spacing-item"><div class="spacing-bar" style="height:12px;"></div><div class="spacing-label">12px</div></div>
+      <div class="spacing-item"><div class="spacing-bar" style="height:16px;"></div><div class="spacing-label">16px</div></div>
+      <div class="spacing-item"><div class="spacing-bar" style="height:20px;"></div><div class="spacing-label">20px</div></div>
+      <div class="spacing-item"><div class="spacing-bar" style="height:24px;"></div><div class="spacing-label">24px</div></div>
+      <div class="spacing-item"><div class="spacing-bar" style="height:32px;"></div><div class="spacing-label">32px</div></div>
+      <div class="spacing-item"><div class="spacing-bar" style="height:40px;"></div><div class="spacing-label">40px</div></div>
+      <div class="spacing-item"><div class="spacing-bar" style="height:48px;"></div><div class="spacing-label">48px</div></div>
+      <div class="spacing-item"><div class="spacing-bar" style="height:64px;"></div><div class="spacing-label">64px</div></div>
+      <div class="spacing-item"><div class="spacing-bar" style="height:80px;"></div><div class="spacing-label">80px · py-20</div></div>
+      <div class="spacing-item"><div class="spacing-bar" style="height:96px;"></div><div class="spacing-label">96px · py-24</div></div>
+    </div>
+
+    <div style="margin-top:32px;"></div>
+    <p class="component-label">Border Radii</p>
+    <div class="radius-grid">
+      <div class="radius-item"><div class="radius-box" style="border-radius:4px;"></div><div class="radius-label">sm<br/>4px</div></div>
+      <div class="radius-item"><div class="radius-box" style="border-radius:8px;"></div><div class="radius-label">md<br/>8px</div></div>
+      <div class="radius-item"><div class="radius-box" style="border-radius:12px;"></div><div class="radius-label">lg<br/>12px</div></div>
+      <div class="radius-item"><div class="radius-box" style="border-radius:16px;"></div><div class="radius-label">xl<br/>16px · cards</div></div>
+      <div class="radius-item"><div class="radius-box" style="border-radius:20px;"></div><div class="radius-label">2xl<br/>20px</div></div>
+      <div class="radius-item"><div class="radius-box" style="border-radius:9999px; width:80px;"></div><div class="radius-label">full<br/>pills/badges</div></div>
+    </div>
+  </div>
+
+  <!-- 05 Components -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-number">05</span>
+      <h2 class="section-title">Components</h2>
+    </div>
+
+    <!-- Buttons -->
+    <p class="component-label">Buttons</p>
+    <div class="component-row">
+      <button class="btn btn-primary btn-lg">Book a Discovery Call</button>
+      <button class="btn btn-primary btn-md">Get Started</button>
+      <button class="btn btn-primary btn-sm">Learn More</button>
+    </div>
+    <div class="component-row">
+      <button class="btn btn-secondary btn-lg">View Case Studies</button>
+      <button class="btn btn-secondary btn-md">View Case Studies</button>
+      <button class="btn btn-ghost btn-md">Cancel</button>
+    </div>
+    <div class="component-row" style="background:var(--navy-900); padding:20px 20px; border-radius:var(--radius-lg);">
+      <button class="btn btn-primary btn-lg">Book a Discovery Call</button>
+      <button class="btn btn-md" style="background:rgba(255,255,255,0.1); color:#fff; border:1.5px solid rgba(255,255,255,0.2); border-radius:var(--radius-md);">Learn More</button>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Cards -->
+    <p class="component-label">Cards</p>
+    <div style="display:grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap:16px;">
+      <div class="card">
+        <div class="eyebrow" style="margin-bottom:16px;">Strategy</div>
+        <h3 style="font-family:var(--font-heading); font-size:18px; font-weight:700; color:var(--gray-900); margin-bottom:10px; letter-spacing:-0.01em;">AI Adoption Framework</h3>
+        <p style="font-size:14px; color:var(--gray-500); line-height:1.6;">A structured 6-stage roadmap for SMBs navigating AI integration without the enterprise overhead.</p>
+        <div style="margin-top:20px; display:flex; gap:8px; flex-wrap:wrap;">
+          <span class="badge badge-indigo">AI Strategy</span>
+          <span class="badge badge-green">Live Demo</span>
+        </div>
+      </div>
+      <div class="card card-dark">
+        <div class="eyebrow eyebrow-light" style="margin-bottom:16px;">E-Commerce</div>
+        <h3 style="font-family:var(--font-heading); font-size:18px; font-weight:700; color:#fff; margin-bottom:10px; letter-spacing:-0.01em;">Recomares Platform</h3>
+        <p style="font-size:14px; color:rgba(255,255,255,0.55); line-height:1.6;">Smart product recommendation engine built for mid-market retailers seeking conversion lift.</p>
+        <div style="margin-top:20px; display:flex; gap:8px; flex-wrap:wrap;">
+          <span class="badge badge-dark-indigo">React</span>
+          <span class="badge" style="background:rgba(255,255,255,0.08); color:rgba(255,255,255,0.6);">Python</span>
+        </div>
+      </div>
+      <div class="card" style="border-color:var(--indigo-200); background:var(--indigo-50);">
+        <div class="eyebrow" style="margin-bottom:16px;">Forecasting</div>
+        <h3 style="font-family:var(--font-heading); font-size:18px; font-weight:700; color:var(--navy-800); margin-bottom:10px; letter-spacing:-0.01em;">Simple Forecast</h3>
+        <p style="font-size:14px; color:var(--indigo-800); line-height:1.6; opacity:0.7;">Lean Six Sigma forecasting tool designed for operations teams without data science resources.</p>
+        <div style="margin-top:20px; display:flex; gap:8px; flex-wrap:wrap;">
+          <span class="badge badge-indigo">Analytics</span>
+          <span class="badge badge-indigo">LSS</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Badges -->
+    <p class="component-label">Badges</p>
+    <div class="component-row">
+      <span class="badge badge-indigo">AI Strategy</span>
+      <span class="badge badge-green">Live Demo</span>
+      <span class="badge badge-amber">In Progress</span>
+      <span class="badge" style="background:#fee2e2; color:#b91c1c;">Error</span>
+      <span class="badge badge-navy">Enterprise</span>
+    </div>
+    <div class="component-row" style="background:var(--navy-800); padding:16px 20px; border-radius:var(--radius-lg);">
+      <span class="badge badge-dark-indigo">React</span>
+      <span class="badge" style="background:rgba(255,255,255,0.1); color:rgba(255,255,255,0.7);">Python</span>
+      <span class="badge" style="background:rgba(74,222,128,0.15); color:#4ade80;">Live</span>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Inputs -->
+    <p class="component-label">Form Inputs</p>
+    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:16px; max-width:640px;">
+      <div>
+        <label style="font-size:13px; font-weight:600; color:var(--gray-700); display:block; margin-bottom:6px;">Full Name</label>
+        <input class="input-field" type="text" placeholder="Maria Espinoza" />
+      </div>
+      <div>
+        <label style="font-size:13px; font-weight:600; color:var(--gray-700); display:block; margin-bottom:6px;">Company Email</label>
+        <input class="input-field" type="email" placeholder="maria@company.com" />
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- CTA Block -->
+    <p class="component-label">CTA Section</p>
+    <div class="cta-block">
+      <div class="cta-blur"></div>
+      <div style="position:relative; z-index:2;">
+        <div class="eyebrow eyebrow-light" style="margin-bottom:16px;">Get Started</div>
+        <h2 style="font-family:var(--font-heading); font-size:32px; font-weight:800; color:#fff; letter-spacing:-0.02em; margin-bottom:12px; line-height:1.15;">Ready to simplify your<br/>technology stack?</h2>
+        <p style="font-size:15px; color:rgba(255,255,255,0.55); margin-bottom:32px; max-width:480px;">Book a no-obligation discovery call and find out how enterprise best practices can work at your scale.</p>
+        <div style="display:flex; gap:12px; flex-wrap:wrap;">
+          <button class="btn btn-primary btn-lg">Book a Discovery Call</button>
+          <button class="btn btn-md" style="background:rgba(255,255,255,0.08); color:rgba(255,255,255,0.85); border:1.5px solid rgba(255,255,255,0.15); border-radius:var(--radius-md);">View Case Studies</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 06 Motion -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-number">06</span>
+      <h2 class="section-title">Motion & Animation</h2>
+    </div>
+    <div class="motion-grid">
+      <div class="motion-card">
+        <div class="motion-demo motion-demo-hover" style="background:var(--indigo-600);"></div>
+        <div class="motion-title">Spring Card Hover</div>
+        <div class="motion-desc">cubic-bezier(0.34, 1.56, 0.64, 1) · 350ms<br/>translateY(-6px) scale(1.01)</div>
+      </div>
+      <div class="motion-card">
+        <div class="motion-demo" style="background:var(--navy-800); animation: fadeInUp 1s ease-out infinite alternate;"></div>
+        <div class="motion-title">AOS Fade Up</div>
+        <div class="motion-desc">ease-out-cubic · 700ms<br/>once: true · 100ms stagger</div>
+      </div>
+      <div class="motion-card">
+        <div class="motion-demo" style="background: linear-gradient(135deg,#1e3a5f,#4f46e5); animation:heroShift 3s ease infinite;"></div>
+        <div class="motion-title">Hero Gradient Shift</div>
+        <div class="motion-desc">14s ease infinite<br/>300% background-size</div>
+      </div>
+      <div class="motion-card">
+        <div style="font-family:var(--font-heading); font-size:18px; font-weight:800; color:var(--indigo-600);" id="word-demo">Enterprise expertise.</div>
+        <div class="motion-title" style="margin-top:12px;">Word Reveal</div>
+        <div class="motion-desc">translateY(12px) → 0<br/>0.5s · per-word stagger</div>
+      </div>
+    </div>
+    <style>
+      @keyframes fadeInUp { from { opacity:0.3; transform:translateY(6px); } to { opacity:1; transform:translateY(0); } }
+    </style>
+    <div style="margin-top:20px; padding:16px 20px; background:var(--gray-100); border-radius:var(--radius-md); font-size:13px; color:var(--gray-600);">
+      <strong>Accessibility:</strong> All animations respect <code>prefers-reduced-motion</code>. AOS and particle effects are disabled for users who prefer reduced motion.
+    </div>
+  </div>
+
+  <!-- 07 Voice & Tone -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-number">07</span>
+      <h2 class="section-title">Voice & Tone</h2>
+    </div>
+    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:16px;">
+      <div style="background:#fff; border:1.5px solid #bbf7d0; border-radius:var(--radius-lg); padding:24px;">
+        <div style="font-size:12px; font-weight:700; color:#15803d; letter-spacing:0.1em; text-transform:uppercase; margin-bottom:12px;">✓ Do</div>
+        <ul style="list-style:none; display:flex; flex-direction:column; gap:8px;">
+          <li style="font-size:14px; color:var(--gray-700); padding-left:16px; position:relative;"><span style="position:absolute;left:0;color:#22c55e;">→</span> "Enterprise expertise, SMB agility"</li>
+          <li style="font-size:14px; color:var(--gray-700); padding-left:16px; position:relative;"><span style="position:absolute;left:0;color:#22c55e;">→</span> Confident, direct, outcome-focused</li>
+          <li style="font-size:14px; color:var(--gray-700); padding-left:16px; position:relative;"><span style="position:absolute;left:0;color:#22c55e;">→</span> Use active voice and concrete benefits</li>
+          <li style="font-size:14px; color:var(--gray-700); padding-left:16px; position:relative;"><span style="position:absolute;left:0;color:#22c55e;">→</span> Lead with the business value, then the how</li>
+        </ul>
+      </div>
+      <div style="background:#fff; border:1.5px solid #fecaca; border-radius:var(--radius-lg); padding:24px;">
+        <div style="font-size:12px; font-weight:700; color:#b91c1c; letter-spacing:0.1em; text-transform:uppercase; margin-bottom:12px;">✗ Don't</div>
+        <ul style="list-style:none; display:flex; flex-direction:column; gap:8px;">
+          <li style="font-size:14px; color:var(--gray-700); padding-left:16px; position:relative;"><span style="position:absolute;left:0;color:#ef4444;">→</span> Avoid jargon without explanation</li>
+          <li style="font-size:14px; color:var(--gray-700); padding-left:16px; position:relative;"><span style="position:absolute;left:0;color:#ef4444;">→</span> Never sound overly casual or flippant</li>
+          <li style="font-size:14px; color:var(--gray-700); padding-left:16px; position:relative;"><span style="position:absolute;left:0;color:#ef4444;">→</span> Avoid vague claims ("best-in-class")</li>
+          <li style="font-size:14px; color:var(--gray-700); padding-left:16px; position:relative;"><span style="position:absolute;left:0;color:#ef4444;">→</span> Don't lead with features — lead with outcomes</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script type="text/babel">
+const { useState, useEffect, useRef } = React;
+
+// ── Minimal Tweaks implementation ──
+function useTweaks(defaults) {
+  const [tweaks, setTweakState] = useState(defaults);
+  function setTweak(keyOrObj, val) {
+    setTweakState(prev => {
+      const next = typeof keyOrObj === 'object' ? {...prev, ...keyOrObj} : {...prev, [keyOrObj]: val};
+      try { window.parent.postMessage({type:'__edit_mode_set_keys', edits: next}, '*'); } catch(e){}
+      return next;
+    });
+  }
+  return [tweaks, setTweak];
+}
+
+function TweaksPanel({ children }) {
+  const [visible, setVisible] = useState(false);
+  useEffect(() => {
+    function onMsg(e) {
+      if (e.data?.type === '__activate_edit_mode') setVisible(true);
+      if (e.data?.type === '__deactivate_edit_mode') setVisible(false);
+    }
+    window.addEventListener('message', onMsg);
+    window.parent.postMessage({type:'__edit_mode_available'}, '*');
+    return () => window.removeEventListener('message', onMsg);
+  }, []);
+  if (!visible) return null;
+  return (
+    <div style={{position:'fixed',bottom:24,right:24,zIndex:9999,background:'#1f2937',color:'#f9fafb',borderRadius:12,padding:'16px 20px',minWidth:220,boxShadow:'0 8px 32px rgba(0,0,0,0.4)',fontFamily:'system-ui,sans-serif',fontSize:13}}>
+      <div style={{fontWeight:700,marginBottom:12,fontSize:12,letterSpacing:'0.1em',textTransform:'uppercase',color:'#9ca3af'}}>Tweaks</div>
+      {children}
+    </div>
+  );
+}
+function TweakSection({ label }) {
+  return <div style={{fontWeight:600,fontSize:11,color:'#6b7280',textTransform:'uppercase',letterSpacing:'0.08em',margin:'12px 0 6px'}}>{label}</div>;
+}
+function TweakRadio({ label, options, value, onChange }) {
+  return (
+    <div style={{marginBottom:10}}>
+      <div style={{fontSize:11,color:'#9ca3af',marginBottom:5}}>{label}</div>
+      <div style={{display:'flex',gap:4}}>
+        {options.map(o => (
+          <button key={o} onClick={() => onChange(o)}
+            style={{flex:1,padding:'4px 0',borderRadius:6,border:'none',cursor:'pointer',fontSize:12,fontWeight:600,
+              background: value===o ? '#4f46e5' : '#374151', color: value===o ? '#fff' : '#9ca3af'}}>
+            {o}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+function TweakColor({ label, value, onChange }) {
+  return (
+    <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:10}}>
+      <span style={{fontSize:12,color:'#9ca3af'}}>{label}</span>
+      <input type="color" value={value} onChange={e => onChange(e.target.value)}
+        style={{width:32,height:24,border:'none',background:'none',cursor:'pointer',borderRadius:4}} />
+    </div>
+  );
+}
+
+
+
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "theme": "light",
+  "accentColor": "#4f46e5"
+}/*EDITMODE-END*/;
+
+function StyleGuideApp() {
+  const [tweaks, setTweak] = useTweaks(TWEAK_DEFAULTS);
+
+  React.useEffect(() => {
+    document.body.style.background = tweaks.theme === 'dark' ? '#111827' : '#f9fafb';
+    document.body.style.color = tweaks.theme === 'dark' ? '#f9fafb' : '#111827';
+  }, [tweaks.theme]);
+
+  React.useEffect(() => {
+    document.documentElement.style.setProperty('--indigo-600', tweaks.accentColor);
+    const hex = tweaks.accentColor;
+    document.documentElement.style.setProperty('--indigo-700', shiftHex(hex, -20));
+    document.documentElement.style.setProperty('--indigo-500', shiftHex(hex, 20));
+  }, [tweaks.accentColor]);
+
+  return (
+    <TweaksPanel>
+      <TweakSection label="Appearance">
+        <TweakRadio id="theme" label="Background" options={["light","dark"]} value={tweaks.theme} onChange={v => setTweak('theme', v)} />
+        <TweakColor id="accentColor" label="Primary Accent" value={tweaks.accentColor} onChange={v => setTweak('accentColor', v)} />
+      </TweakSection>
+    </TweaksPanel>
+  );
+}
+
+function shiftHex(hex, amount) {
+  const num = parseInt(hex.replace('#',''), 16);
+  const r = Math.min(255, Math.max(0, (num >> 16) + amount));
+  const g = Math.min(255, Math.max(0, ((num >> 8) & 0xff) + amount));
+  const b = Math.min(255, Math.max(0, (num & 0xff) + amount));
+  return '#' + [r,g,b].map(x => x.toString(16).padStart(2,'0')).join('');
+}
+
+ReactDOM.createRoot(document.getElementById('tweaks-root')).render(<StyleGuideApp />);
+</script>
+<div id="tweaks-root"></div>
+
+</body>
+</html>

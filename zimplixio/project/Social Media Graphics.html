@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Zimplixio — Social Media Graphics</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: #111827; font-family: 'DM Sans', sans-serif; }
+
+    /* ── Brand tokens ── */
+    :root {
+      --indigo-300: #a5b4fc;
+      --indigo-400: #818cf8;
+      --indigo-500: #6366f1;
+      --indigo-600: #4f46e5;
+      --indigo-700: #4338ca;
+      --navy-900: #060c18;
+      --navy-800: #0f2044;
+      --navy-700: #162d4a;
+      --navy-600: #1e3a5f;
+    }
+
+    /* ── Canvas layout ── */
+    #canvas-app {
+      min-height: 100vh;
+      background: #0d1117;
+      padding: 40px 0 80px;
+    }
+    .canvas-header {
+      padding: 32px 48px 24px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      margin-bottom: 48px;
+    }
+    .canvas-title {
+      font-family: 'Poppins', sans-serif;
+      font-size: 18px; font-weight: 700;
+      color: rgba(255,255,255,0.85);
+      letter-spacing: -0.01em;
+    }
+    .canvas-subtitle { font-size: 13px; color: rgba(255,255,255,0.3); margin-top: 4px; }
+    .section-group { margin-bottom: 64px; padding: 0 48px; }
+    .section-label {
+      font-size: 11px; font-weight: 700; letter-spacing: 0.14em;
+      text-transform: uppercase; color: rgba(255,255,255,0.3);
+      margin-bottom: 20px; display: flex; align-items: center; gap: 12px;
+    }
+    .section-label::after { content:''; flex:1; height:1px; background:rgba(255,255,255,0.06); }
+    .artboards-row { display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start; }
+    .artboard-wrap { display: flex; flex-direction: column; gap: 10px; }
+    .artboard-label { font-size: 12px; color: rgba(255,255,255,0.35); font-weight: 500; }
+    .artboard-frame {
+      border-radius: 8px; overflow: hidden;
+      box-shadow: 0 4px 32px rgba(0,0,0,0.5);
+      border: 1px solid rgba(255,255,255,0.06);
+      transform-origin: top left;
+      flex-shrink: 0;
+    }
+    .graphic { position: relative; overflow: hidden; font-family: 'Poppins', sans-serif; }
+    .graphic * { box-sizing: border-box; }
+
+    /* Gradient backgrounds */
+    .bg-hero {
+      background: linear-gradient(135deg, #1e3a5f 0%, #0f2044 35%, #060c18 55%, #162d4a 75%, #0f2044 100%);
+    }
+    .bg-indigo { background: linear-gradient(135deg, #4f46e5 0%, #4338ca 50%, #3730a3 100%); }
+    .bg-light { background: #f9fafb; }
+    .bg-dark { background: #111827; }
+
+    /* Blur blobs */
+    .blob {
+      position: absolute; border-radius: 50%; filter: blur(60px); pointer-events: none;
+    }
+
+    /* Wordmark */
+    .wordmark {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1;
+    }
+    .wordmark-white { color: #fff; }
+    .wordmark-indigo { color: #4f46e5; }
+
+    /* Eyebrow */
+    .eyebrow-tag {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 10px; font-weight: 700; letter-spacing: 0.16em;
+      text-transform: uppercase;
+      padding: 5px 12px; border-radius: 999px;
+    }
+    .eyebrow-tag-light {
+      background: rgba(165,180,252,0.15); color: #a5b4fc;
+      border: 1px solid rgba(165,180,252,0.25);
+    }
+    .eyebrow-tag-indigo {
+      background: rgba(79,70,229,0.12); color: #4f46e5;
+      border: 1px solid rgba(79,70,229,0.2);
+    }
+    .eyebrow-tag-dark {
+      background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.7);
+      border: 1px solid rgba(255,255,255,0.12);
+    }
+
+    /* Divider line */
+    .accent-line {
+      height: 2px; border-radius: 1px;
+      background: linear-gradient(90deg, #4f46e5, #818cf8, transparent);
+    }
+
+    /* Stat pill */
+    .stat-pill {
+      display: flex; flex-direction: column; align-items: center;
+      padding: 12px 16px; border-radius: 12px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    .stat-num { font-weight: 800; line-height: 1; color: #fff; }
+    .stat-lbl { font-size: 10px; color: rgba(255,255,255,0.5); margin-top: 3px; letter-spacing: 0.04em; font-weight: 500; }
+
+    /* Service pill */
+    .svc-pill {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 8px 14px; border-radius: 10px;
+      font-size: 12px; font-weight: 600;
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.12);
+      color: rgba(255,255,255,0.85);
+    }
+    .svc-dot { width: 6px; height: 6px; border-radius: 50%; background: #818cf8; flex-shrink: 0; }
+
+    /* Grid lines overlay */
+    .grid-overlay {
+      position: absolute; inset: 0; pointer-events: none;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+
+    /* Quote mark */
+    .big-quote {
+      font-family: Georgia, serif;
+      font-size: 80px;
+      line-height: 0.8;
+      color: rgba(99,102,241,0.3);
+      font-weight: 700;
+      display: block;
+    }
+  </style>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/babel">
+const { useState } = React;
+
+/* ══════════════════════════════════════════════════
+   GRAPHIC COMPONENTS
+══════════════════════════════════════════════════ */
+
+// ── LinkedIn Post Cover (1200×627) ──────────────────
+function LinkedInPostA() {
+  return (
+    <div className="graphic bg-hero" style={{width:1200,height:627}}>
+      <div className="grid-overlay"/>
+      <div className="blob" style={{width:400,height:400,top:-100,right:-80,background:'rgba(79,70,229,0.12)'}}/>
+      <div className="blob" style={{width:300,height:300,bottom:-60,left:'30%',background:'rgba(99,102,241,0.08)'}}/>
+
+      {/* Left content */}
+      <div style={{position:'absolute',left:72,top:72,bottom:72,width:580,display:'flex',flexDirection:'column',justifyContent:'space-between'}}>
+        <div>
+          <div className="eyebrow-tag eyebrow-tag-light" style={{marginBottom:28}}>Technology Consulting</div>
+          <h1 style={{fontSize:52,fontWeight:800,color:'#fff',lineHeight:1.08,letterSpacing:'-0.03em',marginBottom:20}}>
+            Enterprise expertise,<br/>
+            <span style={{color:'#818cf8'}}>SMB speed.</span>
+          </h1>
+          <div className="accent-line" style={{width:60,marginBottom:20}}/>
+          <p style={{fontSize:17,color:'rgba(255,255,255,0.55)',fontWeight:300,lineHeight:1.6,maxWidth:460}}>
+            We simplify complex technology decisions for growing businesses — without the enterprise price tag.
+          </p>
+        </div>
+        <div className="wordmark wordmark-white" style={{fontSize:22,opacity:0.6}}>Zimplixio</div>
+      </div>
+
+      {/* Right stats panel */}
+      <div style={{position:'absolute',right:72,top:72,bottom:72,width:440,display:'flex',flexDirection:'column',justifyContent:'center',gap:16}}>
+        <div style={{background:'rgba(255,255,255,0.04)',border:'1px solid rgba(255,255,255,0.08)',borderRadius:20,padding:32}}>
+          <div style={{fontSize:12,fontWeight:600,color:'rgba(255,255,255,0.4)',letterSpacing:'0.12em',textTransform:'uppercase',marginBottom:24}}>What we deliver</div>
+          {['AI Adoption Strategy','E-Commerce Optimization','Operational Analytics','Technology Roadmapping'].map((s,i) => (
+            <div key={i} style={{display:'flex',alignItems:'center',gap:12,marginBottom:i<3?16:0}}>
+              <div style={{width:24,height:24,borderRadius:6,background:'rgba(79,70,229,0.3)',border:'1px solid rgba(99,102,241,0.4)',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}>
+                <svg width="10" height="10" viewBox="0 0 10 10"><path d="M2 5l2.5 2.5L8 2.5" stroke="#818cf8" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round"/></svg>
+              </div>
+              <span style={{fontSize:14,color:'rgba(255,255,255,0.8)',fontWeight:500}}>{s}</span>
+            </div>
+          ))}
+        </div>
+        <div style={{display:'flex',gap:12}}>
+          {[['100%','Client satisfaction'],['6','Framework stages'],['2','Expert consultants']].map(([n,l],i) => (
+            <div key={i} className="stat-pill" style={{flex:1}}>
+              <span className="stat-num" style={{fontSize:22}}>{n}</span>
+              <span className="stat-lbl" style={{textAlign:'center'}}>{l}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── LinkedIn Post B — Thought Leadership (1200×627) ──
+function LinkedInPostB() {
+  return (
+    <div className="graphic bg-light" style={{width:1200,height:627,fontFamily:'Poppins,sans-serif'}}>
+      {/* Indigo sidebar */}
+      <div style={{position:'absolute',left:0,top:0,bottom:0,width:8,background:'linear-gradient(180deg,#4f46e5,#818cf8)'}}/>
+
+      <div style={{position:'absolute',inset:0,left:8,display:'flex'}}>
+        {/* Left */}
+        <div style={{flex:1,padding:'56px 56px 56px 56px',display:'flex',flexDirection:'column',justifyContent:'space-between'}}>
+          <div>
+            <div className="eyebrow-tag eyebrow-tag-indigo" style={{marginBottom:32}}>Insight</div>
+            <span className="big-quote">"</span>
+            <h2 style={{fontSize:38,fontWeight:800,color:'#111827',lineHeight:1.15,letterSpacing:'-0.02em',marginTop:-12,marginBottom:20}}>
+              Most SMBs don't need<br/>more software —<br/>they need a clearer strategy.
+            </h2>
+            <div className="accent-line" style={{width:48,marginBottom:24}}/>
+            <p style={{fontSize:16,color:'#6b7280',lineHeight:1.65,maxWidth:500}}>
+              The gap isn't technology. It's the translation layer between enterprise best practices and the realities of running a lean business.
+            </p>
+          </div>
+          <div style={{display:'flex',alignItems:'center',gap:16}}>
+            <div style={{width:44,height:44,borderRadius:12,background:'#4f46e5',display:'flex',alignItems:'center',justifyContent:'center'}}>
+              <span style={{color:'#fff',fontWeight:800,fontSize:18,letterSpacing:'-0.03em'}}>Z</span>
+            </div>
+            <div>
+              <div className="wordmark wordmark-indigo" style={{fontSize:18}}>Zimplixio</div>
+              <div style={{fontSize:12,color:'#9ca3af',marginTop:2}}>Enterprise expertise for SMBs</div>
+            </div>
+          </div>
+        </div>
+
+        {/* Right panel */}
+        <div style={{width:360,background:'#f3f4f6',display:'flex',flexDirection:'column',justifyContent:'center',padding:'56px 48px'}}>
+          <div style={{fontSize:12,fontWeight:700,color:'#9ca3af',letterSpacing:'0.12em',textTransform:'uppercase',marginBottom:24}}>Our approach</div>
+          {[
+            {n:'01',t:'Diagnose',d:'Understand your current technology landscape'},
+            {n:'02',t:'Simplify',d:'Remove complexity, keep what delivers value'},
+            {n:'03',t:'Scale',d:'Build systems that grow with your business'},
+          ].map(({n,t,d}) => (
+            <div key={n} style={{marginBottom:28}}>
+              <div style={{fontSize:11,fontWeight:700,color:'#4f46e5',letterSpacing:'0.1em',marginBottom:4}}>{n}</div>
+              <div style={{fontSize:16,fontWeight:700,color:'#111827',marginBottom:4}}>{t}</div>
+              <div style={{fontSize:13,color:'#6b7280',lineHeight:1.5}}>{d}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── LinkedIn Banner (1584×396) ──────────────────────
+function LinkedInBanner() {
+  return (
+    <div className="graphic bg-hero" style={{width:1584,height:396}}>
+      <div className="grid-overlay"/>
+      <div className="blob" style={{width:500,height:500,top:-150,right:-80,background:'rgba(79,70,229,0.15)'}}/>
+      <div className="blob" style={{width:350,height:350,bottom:-100,left:'20%',background:'rgba(99,102,241,0.1)'}}/>
+
+      <div style={{position:'absolute',inset:0,display:'flex',alignItems:'center',padding:'0 80px'}}>
+        <div style={{flex:1}}>
+          <div className="eyebrow-tag eyebrow-tag-light" style={{marginBottom:20}}>Technology Consulting · SMB Focus</div>
+          <div className="wordmark wordmark-white" style={{fontSize:48,marginBottom:12}}>Zimplixio</div>
+          <p style={{fontSize:18,color:'rgba(255,255,255,0.5)',fontWeight:300,maxWidth:540}}>
+            Enterprise expertise, simplified for businesses that move fast.
+          </p>
+        </div>
+        <div style={{display:'flex',gap:20,flexWrap:'wrap',maxWidth:700,justifyContent:'flex-end'}}>
+          {['AI Strategy','E-Commerce','Forecasting','Operational Analytics','Technology Roadmap','Process Optimization'].map(s => (
+            <div key={s} className="svc-pill">
+              <div className="svc-dot"/>
+              {s}
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── Instagram Square (1080×1080) — Brand ────────────
+function InstagramSquareA() {
+  return (
+    <div className="graphic bg-hero" style={{width:1080,height:1080}}>
+      <div className="grid-overlay"/>
+      <div className="blob" style={{width:600,height:600,top:-100,right:-100,background:'rgba(79,70,229,0.14)'}}/>
+      <div className="blob" style={{width:500,height:500,bottom:-80,left:-60,background:'rgba(99,102,241,0.1)'}}/>
+
+      <div style={{position:'absolute',inset:0,display:'flex',flexDirection:'column',justifyContent:'space-between',padding:72}}>
+        {/* Top bar */}
+        <div style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
+          <div className="wordmark wordmark-white" style={{fontSize:24,opacity:0.7}}>Zimplixio</div>
+          <div className="eyebrow-tag eyebrow-tag-light">SMB Tech</div>
+        </div>
+
+        {/* Center */}
+        <div>
+          <h1 style={{fontSize:72,fontWeight:800,color:'#fff',lineHeight:1.05,letterSpacing:'-0.03em',marginBottom:24}}>
+            Simplify.<br/>
+            <span style={{color:'#818cf8'}}>Strategize.</span><br/>
+            Scale.
+          </h1>
+          <div className="accent-line" style={{width:80,marginBottom:24}}/>
+          <p style={{fontSize:20,color:'rgba(255,255,255,0.55)',lineHeight:1.6,maxWidth:560,fontWeight:300}}>
+            Enterprise-grade thinking, built for businesses that don't have an enterprise budget.
+          </p>
+        </div>
+
+        {/* Bottom CTA */}
+        <div style={{display:'flex',alignItems:'center',gap:20}}>
+          <div style={{padding:'14px 28px',background:'#4f46e5',borderRadius:10,fontSize:15,fontWeight:700,color:'#fff',letterSpacing:'-0.01em'}}>
+            Book a free call
+          </div>
+          <div style={{fontSize:14,color:'rgba(255,255,255,0.4)'}}>zimplixio.com</div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── Instagram Square B — Service highlight (1080×1080)
+function InstagramSquareB() {
+  return (
+    <div className="graphic bg-indigo" style={{width:1080,height:1080,fontFamily:'Poppins,sans-serif'}}>
+      <div className="blob" style={{width:600,height:600,top:-150,right:-150,background:'rgba(255,255,255,0.06)'}}/>
+      <div className="blob" style={{width:400,height:400,bottom:-100,left:-60,background:'rgba(0,0,0,0.15)'}}/>
+
+      <div style={{position:'absolute',inset:0,display:'flex',flexDirection:'column',justifyContent:'space-between',padding:72}}>
+        <div style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
+          <div className="wordmark wordmark-white" style={{fontSize:24,opacity:0.75}}>Zimplixio</div>
+          <div className="eyebrow-tag" style={{background:'rgba(255,255,255,0.12)',color:'rgba(255,255,255,0.8)',border:'1px solid rgba(255,255,255,0.15)'}}>AI Framework</div>
+        </div>
+
+        <div>
+          <div style={{fontSize:13,fontWeight:600,color:'rgba(255,255,255,0.5)',letterSpacing:'0.14em',textTransform:'uppercase',marginBottom:16}}>Our 6-stage roadmap</div>
+          {['Assess','Plan','Pilot','Integrate','Optimize','Scale'].map((s,i) => (
+            <div key={i} style={{display:'flex',alignItems:'center',gap:16,marginBottom:i<5?18:0}}>
+              <div style={{width:32,height:32,borderRadius:8,background:'rgba(255,255,255,0.12)',border:'1px solid rgba(255,255,255,0.2)',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}>
+                <span style={{fontSize:13,fontWeight:800,color:'rgba(255,255,255,0.6)'}}>{String(i+1).padStart(2,'0')}</span>
+              </div>
+              <div style={{flex:1,height:1,background:'rgba(255,255,255,0.1)'}}/>
+              <span style={{fontSize:20,fontWeight:700,color:'#fff',letterSpacing:'-0.01em'}}>{s}</span>
+            </div>
+          ))}
+        </div>
+
+        <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-end'}}>
+          <p style={{fontSize:16,color:'rgba(255,255,255,0.55)',maxWidth:360,lineHeight:1.55,fontWeight:300}}>A structured path from AI curiosity to measurable business impact.</p>
+          <div style={{fontSize:14,color:'rgba(255,255,255,0.35)'}}>zimplixio.com</div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── Instagram Story (1080×1920) ──────────────────────
+function InstagramStory() {
+  return (
+    <div className="graphic bg-hero" style={{width:1080,height:1920}}>
+      <div className="grid-overlay"/>
+      <div className="blob" style={{width:700,height:700,top:50,right:-150,background:'rgba(79,70,229,0.16)'}}/>
+      <div className="blob" style={{width:600,height:600,bottom:200,left:-100,background:'rgba(99,102,241,0.12)'}}/>
+
+      <div style={{position:'absolute',inset:0,display:'flex',flexDirection:'column',justifyContent:'space-between',padding:80}}>
+        {/* Top */}
+        <div style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
+          <div className="wordmark wordmark-white" style={{fontSize:26,opacity:0.7}}>Zimplixio</div>
+          <div className="eyebrow-tag eyebrow-tag-light">New post</div>
+        </div>
+
+        {/* Middle */}
+        <div>
+          <div className="eyebrow-tag eyebrow-tag-light" style={{marginBottom:36,fontSize:11}}>Technology Strategy</div>
+          <h1 style={{fontSize:80,fontWeight:800,color:'#fff',lineHeight:1.05,letterSpacing:'-0.03em',marginBottom:32}}>
+            Is your tech<br/>stack holding<br/>you <span style={{color:'#818cf8'}}>back?</span>
+          </h1>
+          <div className="accent-line" style={{width:80,marginBottom:32}}/>
+          <p style={{fontSize:22,color:'rgba(255,255,255,0.55)',lineHeight:1.65,fontWeight:300}}>
+            Most SMBs are sitting on fragmented, overlapping tools — spending more and getting less. We map it, simplify it, and build what actually works.
+          </p>
+        </div>
+
+        {/* Stats */}
+        <div style={{display:'flex',gap:16}}>
+          {[['SMB','focus'],['AI + Ops','expertise'],['Free','discovery call']].map(([n,l],i) => (
+            <div key={i} className="stat-pill" style={{flex:1}}>
+              <span className="stat-num" style={{fontSize:16,textAlign:'center'}}>{n}</span>
+              <span className="stat-lbl" style={{textAlign:'center'}}>{l}</span>
+            </div>
+          ))}
+        </div>
+
+        {/* Bottom CTA */}
+        <div style={{textAlign:'center'}}>
+          <div style={{padding:'18px 40px',background:'#4f46e5',borderRadius:14,fontSize:18,fontWeight:700,color:'#fff',display:'inline-block',marginBottom:20}}>
+            Book a Discovery Call ↗
+          </div>
+          <div style={{fontSize:16,color:'rgba(255,255,255,0.35)'}}>zimplixio.com</div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── Twitter/X Card (1200×675) ────────────────────────
+function TwitterCard() {
+  return (
+    <div className="graphic bg-dark" style={{width:1200,height:675,fontFamily:'Poppins,sans-serif'}}>
+      {/* Left indigo stripe */}
+      <div style={{position:'absolute',left:0,top:0,bottom:0,width:6,background:'linear-gradient(180deg,#4f46e5,#818cf8)'}}/>
+      <div className="blob" style={{width:400,height:400,top:-100,right:-60,background:'rgba(79,70,229,0.1)'}}/>
+
+      <div style={{position:'absolute',inset:0,left:6,display:'flex',alignItems:'center',padding:'0 72px 0 66px'}}>
+        {/* Left */}
+        <div style={{flex:1,paddingRight:64}}>
+          <div className="eyebrow-tag eyebrow-tag-dark" style={{marginBottom:24}}>Zimplixio · SMB Tech</div>
+          <h2 style={{fontSize:44,fontWeight:800,color:'#fff',lineHeight:1.1,letterSpacing:'-0.02em',marginBottom:20}}>
+            We make enterprise<br/>tech work for <span style={{color:'#818cf8'}}>your</span> business.
+          </h2>
+          <div className="accent-line" style={{width:48,marginBottom:20}}/>
+          <p style={{fontSize:16,color:'rgba(255,255,255,0.5)',lineHeight:1.6,fontWeight:300}}>
+            AI strategy, e-commerce optimization, and operational analytics — without the enterprise overhead.
+          </p>
+          <div style={{marginTop:32,fontSize:14,color:'rgba(255,255,255,0.3)'}}>zimplixio.com</div>
+        </div>
+
+        {/* Right card */}
+        <div style={{width:320,background:'rgba(255,255,255,0.04)',border:'1px solid rgba(255,255,255,0.08)',borderRadius:20,padding:32,flexShrink:0}}>
+          <div style={{fontSize:12,fontWeight:600,color:'rgba(255,255,255,0.35)',letterSpacing:'0.1em',textTransform:'uppercase',marginBottom:20}}>Services</div>
+          {['AI Adoption Framework','E-Commerce Strategy','Data & Forecasting','Tech Roadmapping'].map((s,i) => (
+            <div key={i} style={{display:'flex',alignItems:'center',gap:10,marginBottom:i<3?14:0}}>
+              <div style={{width:6,height:6,borderRadius:'50%',background:'#6366f1',flexShrink:0}}/>
+              <span style={{fontSize:14,color:'rgba(255,255,255,0.7)',fontWeight:500}}>{s}</span>
+            </div>
+          ))}
+          <div style={{marginTop:24,padding:'12px 0',borderTop:'1px solid rgba(255,255,255,0.08)',display:'flex',justifyContent:'center'}}>
+            <span style={{fontSize:13,fontWeight:700,color:'#818cf8'}}>Free discovery call →</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ══════════════════════════════════════════════════
+   CANVAS APP
+══════════════════════════════════════════════════ */
+
+function Artboard({ label, width, height, scale = 0.35, children }) {
+  return (
+    <div className="artboard-wrap">
+      <div className="artboard-label">{label} <span style={{opacity:0.5}}>({width}×{height})</span></div>
+      <div className="artboard-frame" style={{width: width*scale, height: height*scale}}>
+        <div style={{transform:`scale(${scale})`, transformOrigin:'top left', width, height, flexShrink:0}}>
+          {children}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <div id="canvas-app">
+      <div className="canvas-header">
+        <div className="canvas-title">Zimplixio — Social Media Graphics</div>
+        <div className="canvas-subtitle">7 templates across LinkedIn, Instagram, and Twitter/X · All at production dimensions</div>
+      </div>
+
+      <div className="section-group">
+        <div className="section-label">LinkedIn</div>
+        <div className="artboards-row">
+          <Artboard label="Post — Dark Hero" width={1200} height={627} scale={0.36}>
+            <LinkedInPostA />
+          </Artboard>
+          <Artboard label="Post — Thought Leadership" width={1200} height={627} scale={0.36}>
+            <LinkedInPostB />
+          </Artboard>
+          <Artboard label="Profile Banner" width={1584} height={396} scale={0.36}>
+            <LinkedInBanner />
+          </Artboard>
+        </div>
+      </div>
+
+      <div className="section-group">
+        <div className="section-label">Instagram</div>
+        <div className="artboards-row">
+          <Artboard label="Square Post — Brand" width={1080} height={1080} scale={0.3}>
+            <InstagramSquareA />
+          </Artboard>
+          <Artboard label="Square Post — AI Framework" width={1080} height={1080} scale={0.3}>
+            <InstagramSquareB />
+          </Artboard>
+          <Artboard label="Story" width={1080} height={1920} scale={0.22}>
+            <InstagramStory />
+          </Artboard>
+        </div>
+      </div>
+
+      <div className="section-group">
+        <div className="section-label">Twitter / X</div>
+        <div className="artboards-row">
+          <Artboard label="Link Card" width={1200} height={675} scale={0.36}>
+            <TwitterCard />
+          </Artboard>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>

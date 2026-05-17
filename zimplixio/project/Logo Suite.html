@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Zimplixio — Logo Suite</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --green:   #276229;
+      --gold:    #B8924A;
+      --charcoal:#3B4A5E;
+      --cream:   #FAFAF7;
+      --navy:    #060c18;
+      --indigo:  #4f46e5;
+      --indigo-light: #a5b4fc;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: #F4F4F1;
+      color: #1a1a1a;
+    }
+
+    /* ── Page chrome ── */
+    .page-header {
+      background: var(--charcoal);
+      padding: 40px 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .page-header-title {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px; font-weight: 600;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: rgba(255,255,255,0.5);
+    }
+    .page-header-sub { font-size: 12px; color: rgba(255,255,255,0.25); margin-top: 4px; }
+
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 64px 120px; }
+
+    /* ── Section ── */
+    .section { margin-top: 80px; }
+    .section-label {
+      font-size: 11px; font-weight: 700; letter-spacing: 0.14em;
+      text-transform: uppercase; color: rgba(0,0,0,0.3);
+      margin-bottom: 28px;
+      display: flex; align-items: center; gap: 14px;
+    }
+    .section-label::after { content:''; flex:1; height:1px; background:rgba(0,0,0,0.1); }
+
+    /* ── Tile grid ── */
+    .tile-grid { display: flex; flex-wrap: wrap; gap: 16px; }
+
+    .tile {
+      border-radius: 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px;
+      position: relative;
+    }
+    .tile-light { background: #fff; border: 1px solid rgba(0,0,0,0.08); }
+    .tile-cream { background: var(--cream); border: 1px solid rgba(0,0,0,0.06); }
+    .tile-dark  { background: var(--navy); }
+    .tile-charcoal { background: var(--charcoal); }
+    .tile-green { background: var(--green); }
+    .tile-gold  { background: var(--gold); }
+    .tile-indigo { background: var(--indigo); }
+    .tile-gray  { background: #e5e7eb; }
+
+    .tile-label {
+      position: absolute; bottom: 14px; left: 0; right: 0;
+      text-align: center;
+      font-size: 11px; color: rgba(0,0,0,0.35);
+      letter-spacing: 0.06em;
+    }
+    .tile-label-light { color: rgba(255,255,255,0.35); }
+
+    /* ── Wordmark tile ── */
+    .wordmark-tile {
+      border-radius: 16px;
+      padding: 56px 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex: 1;
+      min-width: 400px;
+      position: relative;
+    }
+
+    /* ── Variation grid ── */
+    .var-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+    .var-card {
+      border-radius: 16px;
+      padding: 36px 28px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+    .var-name { font-size: 13px; font-weight: 600; text-align: center; }
+    .var-desc { font-size: 11px; text-align: center; opacity: 0.55; line-height: 1.5; }
+
+    /* ── Scale demo ── */
+    .scale-row {
+      background: #fff;
+      border: 1px solid rgba(0,0,0,0.08);
+      border-radius: 16px;
+      padding: 32px 40px;
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      flex-wrap: wrap;
+    }
+    .scale-item { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+    .scale-px { font-size: 11px; color: rgba(0,0,0,0.3); letter-spacing: 0.06em; }
+
+    /* ── Download note ── */
+    .download-note {
+      margin-top: 64px;
+      background: #fff;
+      border: 1px solid rgba(0,0,0,0.08);
+      border-radius: 16px;
+      padding: 32px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .download-note-text { font-size: 14px; color: var(--charcoal); }
+    .download-note-text strong { font-weight: 600; }
+    .download-btn {
+      padding: 10px 22px;
+      background: var(--charcoal);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      transition: background 0.15s;
+    }
+    .download-btn:hover { background: #2d3a4e; }
+    .copied { background: var(--green) !important; }
+
+    .note-tag {
+      display: inline-block;
+      background: #f0fdf4;
+      color: #166534;
+      border: 1px solid #bbf7d0;
+      padding: 3px 10px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 600;
+      margin-left: 8px;
+      vertical-align: middle;
+    }
+
+    /* ── SVG icon reuse ── */
+    /* The sigma icon SVG uses CSS variables for theming */
+  </style>
+</head>
+<body>
+
+<!-- Page header -->
+<div class="page-header">
+  <div>
+    <div class="page-header-title">Zimplixio — Logo Suite</div>
+    <div class="page-header-sub">SVG • Infinitely scalable • April 2026</div>
+  </div>
+  <div style="display:flex;gap:12px;font-size:12px;color:rgba(255,255,255,0.3);">
+    <span>Icon mark</span>
+    <span>·</span>
+    <span>Wordmark</span>
+    <span>·</span>
+    <span>Color variants</span>
+    <span>·</span>
+    <span>Reversed</span>
+  </div>
+</div>
+
+<!-- Hidden SVG defs for reusable symbol -->
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <!-- Base sigma icon path (400×400 viewBox, center 200,200) -->
+    <!-- Outer ring: r=180, strokeWidth=20 -->
+    <!-- Sigma: r_outer=115, r_inner=65, gap from 320° to 10° -->
+    <symbol id="zimplixio-icon" viewBox="0 0 400 400">
+      <!-- outer ring -->
+      <circle id="ring" cx="200" cy="200" r="180" stroke-width="20" fill="none"/>
+      <!-- sigma body: gap from SVG 320° to 10° -->
+      <!-- outer_top(320°):(288,126) outer_bot(10°):(313,220) -->
+      <!-- inner_top(320°):(250,158) inner_bot(10°):(264,211) -->
+      <path id="sigma" d="
+        M 313,220
+        A 115,115 0 1,1 288,126
+        L 362,126
+        L 362,176
+        L 250,176
+        A 65,65 0 1,0 264,211
+        Z
+      "/>
+      <!-- < > code brackets -->
+      <polyline id="bracket-left"  points="183,183 168,200 183,217" stroke-width="9" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <polyline id="bracket-right" points="217,183 232,200 217,217" stroke-width="9" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    </symbol>
+  </defs>
+</svg>
+
+<div class="container">
+
+  <!-- ── 01 The Mark ── -->
+  <div class="section">
+    <div class="section-label">01 · The Mark</div>
+    <div class="tile-grid">
+
+      <!-- Light / canonical -->
+      <div class="tile tile-light" style="width:260px;height:260px;">
+        <svg width="140" height="140" viewBox="0 0 400 400" overflow="visible">
+          <circle cx="200" cy="200" r="160" stroke="#B8924A" stroke-width="16" fill="none"/>
+          <path d="M 313,220 A 115,115 0 1,1 288,126 L 362,126 L 362,176 L 250,176 A 65,65 0 1,0 264,211 Z" fill="#276229"/>
+          <polyline points="183,183 168,200 183,217" stroke="#B8924A" stroke-width="9" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <polyline points="217,183 232,200 217,217" stroke="#B8924A" stroke-width="9" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <div class="tile-label">On white</div>
+      </div>
+
+      <!-- Cream -->
+      <div class="tile tile-cream" style="width:260px;height:260px;">
+        <svg width="140" height="140" viewBox="0 0 400 400" overflow="visible">
+          <circle cx="200" cy="200" r="160" stroke="#B8924A" stroke-width="16" fill="none"/>
+          <path d="M 313,220 A 115,115 0 1,1 288,126 L 362,126 L 362,176 L 250,176 A 65,65 0 1,0 264,211 Z" fill="#276229"/>
+          <polyline points="183,183 168,200 183,217" stroke="#B8924A" stroke-width="9" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <polyline points="217,183 232,200 217,217" stroke="#B8924A" stroke-width="9" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <div class="tile-label">On cream</div>
+      </div>
+
+      <!-- Dark -->
+      <div class="tile tile-dark" style="width:260px;height:260px;">
+        <svg width="140" height="140" viewBox="0 0 400 400" overflow="visible">
+          <circle cx="200" cy="200" r="160" stroke="#B8924A" stroke-width="16" fill="none"/>
+          <path d="M 313,220 A 115,115 0 1,1 288,126 L 362,126 L 362,176 L 250,176 A 65,65 0 1,0 264,211 Z" fill="#276229"/>
+          <polyline points="183,183 168,200 183,217" stroke="#B8924A" stroke-width="9" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <polyline points="217,183 232,200 217,217" stroke="#B8924A" stroke-width="9" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <div class="tile-label tile-label-light">On navy</div>
+      </div>
+
+      <!-- Charcoal -->
+      <div class="tile tile-charcoal" style="width:260px;height:260px;">
+        <svg width="140" height="140" viewBox="0 0 400 400" overflow="visible">
+          <circle cx="200" cy="200" r="160" stroke="#B8924A" stroke-width="16" fill="none"/>
+          <path d="M 313,220 A 115,115 0 1,1 288,126 L 362,126 L 362,176 L 250,176 A 65,65 0 1,0 264,211 Z" fill="#276229"/>
+          <polyline points="183,183 168,200 183,217" stroke="#B8924A" stroke-width="9" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <polyline points="217,183 232,200 217,217" stroke="#B8924A" stroke-width="9" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <div class="tile-label tile-label-light">On charcoal</div>
+      </div>
+
+      <!-- Reversed / all-white -->
+      <div class="tile tile-green" style="width:260px;height:260px;">
+        <svg width="140" height="140" viewBox="0 0 400 400" overflow="visible">
+          <circle cx="200" cy="200" r="160" stroke="rgba(255,255,255,0.5)" stroke-width="16" fill="none"/>
+          <path d="M 313,220 A 115,115 0 1,1 288,126 L 362,126 L 362,176 L 250,176 A 65,65 0 1,0 264,211 Z" fill="white"/>
+          <polyline points="183,183 168,200 183,217" stroke="rgba(255,255,255,0.55)" stroke-width="9" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <polyline points="217,183 232,200 217,217" stroke="rgba(255,255,255,0.55)" stroke-width="9" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <div class="tile-label tile-label-light">Reversed on green</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── 02 The Wordmark ── -->
+  <div class="section">
+    <div class="section-label">02 · The Wordmark</div>
+    <div style="display:flex;flex-direction:column;gap:16px;">
+
+      <!-- Light wordmark -->
+      <div class="wordmark-tile tile-light" style="justify-content:flex-start;">
+        <svg height="64" viewBox="0 0 1050 200" xmlns="http://www.w3.org/2000/svg">
+          <text x="0" y="158"
+            font-family="Montserrat, 'Arial Black', sans-serif"
+            font-weight="900"
+            font-size="168"
+            fill="#3B4A5E"
+            letter-spacing="-4">ZIMPLIXI</text>
+          <!-- sigma icon replacing the O -->
+          <g transform="translate(820,0) scale(1.04)">
+            <!-- outer ring (partial top arc, open at lower left to suggest the gold ring) -->
+            <circle cx="100" cy="100" r="90" stroke="#B8924A" stroke-width="12" fill="none"/>
+            <!-- sigma body -->
+            <path d="
+              M 156,110
+              A 57,57 0 1,1 144,63
+              L 181,63
+              L 181,88
+              L 125,88
+              A 32,32 0 1,0 132,105
+              Z
+            " fill="#276229"/>
+            <!-- brackets -->
+            <polyline points="92,91 84,100 92,109" stroke="#B8924A" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            <polyline points="108,91 116,100 108,109" stroke="#B8924A" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          </g>
+        </svg>
+        <div class="tile-label">Primary — Light background</div>
+      </div>
+
+      <!-- Dark wordmark -->
+      <div class="wordmark-tile tile-dark" style="justify-content:flex-start;">
+        <svg height="64" viewBox="0 0 1050 200" xmlns="http://www.w3.org/2000/svg">
+          <text x="0" y="158"
+            font-family="Montserrat, 'Arial Black', sans-serif"
+            font-weight="900"
+            font-size="168"
+            fill="#FFFFFF"
+            letter-spacing="-4">ZIMPLIXI</text>
+          <g transform="translate(820,0) scale(1.04)">
+            <circle cx="100" cy="100" r="90" stroke="#B8924A" stroke-width="12" fill="none"/>
+            <path d="M 156,110 A 57,57 0 1,1 144,63 L 181,63 L 181,88 L 125,88 A 32,32 0 1,0 132,105 Z" fill="#276229"/>
+            <polyline points="92,91 84,100 92,109" stroke="#B8924A" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            <polyline points="108,91 116,100 108,109" stroke="#B8924A" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          </g>
+        </svg>
+        <div class="tile-label tile-label-light">Primary — Dark background</div>
+      </div>
+
+      <!-- Charcoal wordmark -->
+      <div class="wordmark-tile tile-charcoal" style="justify-content:flex-start;">
+        <svg height="64" viewBox="0 0 1050 200" xmlns="http://www.w3.org/2000/svg">
+          <text x="0" y="158"
+            font-family="Montserrat, 'Arial Black', sans-serif"
+            font-weight="900"
+            font-size="168"
+            fill="#FFFFFF"
+            letter-spacing="-4">ZIMPLIXI</text>
+          <g transform="translate(820,0) scale(1.04)">
+            <circle cx="100" cy="100" r="90" stroke="#B8924A" stroke-width="12" fill="none"/>
+            <path d="M 156,110 A 57,57 0 1,1 144,63 L 181,63 L 181,88 L 125,88 A 32,32 0 1,0 132,105 Z" fill="#276229"/>
+            <polyline points="92,91 84,100 92,109" stroke="#B8924A" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            <polyline points="108,91 116,100 108,109" stroke="#B8924A" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          </g>
+        </svg>
+        <div class="tile-label tile-label-light">Primary — Charcoal background</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── 03 Color Variations ── -->
+  <div class="section">
+    <div class="section-label">03 · Color Variations</div>
+    <div class="var-grid">
+
+      <!-- Canonical -->
+      <div class="var-card tile-light">
+        <svg width="110" height="110" viewBox="0 0 400 400" overflow="visible">
+          <circle cx="200" cy="200" r="160" stroke="#B8924A" stroke-width="16" fill="none"/>
+          <path d="M 313,220 A 115,115 0 1,1 288,126 L 362,126 L 362,176 L 250,176 A 65,65 0 1,0 264,211 Z" fill="#276229"/>
+          <polyline points="183,183 168,200 183,217" stroke="#B8924A" stroke-width="9" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <polyline points="217,183 232,200 217,217" stroke="#B8924A" stroke-width="9" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <div>
+          <div class="var-name">Canonical</div>
+          <div class="var-desc">Forest green · Gold ring · Original brand colors</div>
+          <div style="display:flex;gap:6px;margin-top:10px;justify-content:center;">
+            <div style="width:16px;height:16px;border-radius:4px;background:#276229;border:1px solid rgba(0,0,0,0.1);"></div>
+            <div style="width:16px;height:16px;border-radius:4px;background:#B8924A;border:1px solid rgba(0,0,0,0.1);"></div>
+            <div style="width:16px;height:16px;border-radius:4px;background:#3B4A5E;border:1px solid rgba(0,0,0,0.1);"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Indigo / web variant -->
+      <div class="var-card tile-light">
+        <svg width="110" height="110" viewBox="0 0 400 400" overflow="visible">
+          <circle cx="200" cy="200" r="160" stroke="#4f46e5" stroke-width="16" fill="none"/>
+          <path d="M 313,220 A 115,115 0 1,1 288,126 L 362,126 L 362,176 L 250,176 A 65,65 0 1,0 264,211 Z" fill="#276229"/>
+          <polyline points="183,183 168,200 183,217" stroke="#4f46e5" stroke-width="9" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <polyline points="217,183 232,200 217,217" stroke="#4f46e5" stroke-width="9" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <div>
+          <div class="var-name">Digital</div>
+          <div class="var-desc">Indigo ring · Green sigma · Matches website palette</div>
+          <div style="display:flex;gap:6px;margin-top:10px;justify-content:center;">
+            <div style="width:16px;height:16px;border-radius:4px;background:#276229;border:1px solid rgba(0,0,0,0.1);"></div>
+            <div style="width:16px;height:16px;border-radius:4px;background:#4f46e5;border:1px solid rgba(0,0,0,0.1);"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Monochrome -->
+      <div class="var-card tile-light">
+        <svg width="110" height="110" viewBox="0 0 400 400" overflow="visible">
+          <circle cx="200" cy="200" r="160" stroke="#3B4A5E" stroke-width="16" fill="none"/>
+          <path d="M 313,220 A 115,115 0 1,1 288,126 L 362,126 L 362,176 L 250,176 A 65,65 0 1,0 264,211 Z" fill="#3B4A5E"/>
+          <polyline points="183,183 168,200 183,217" stroke="#3B4A5E" stroke-width="9" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <polyline points="217,183 232,200 217,217" stroke="#3B4A5E" stroke-width="9" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <div>
+          <div class="var-name">Monochrome</div>
+          <div class="var-desc">Single charcoal · Fax, stamps, single-color print</div>
+          <div style="display:flex;gap:6px;margin-top:10px;justify-content:center;">
+            <div style="width:16px;height:16px;border-radius:4px;background:#3B4A5E;border:1px solid rgba(0,0,0,0.1);"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- All-white / reversed -->
+      <div class="var-card tile-charcoal">
+        <svg width="110" height="110" viewBox="0 0 400 400" overflow="visible">
+          <circle cx="200" cy="200" r="160" stroke="rgba(255,255,255,0.7)" stroke-width="16" fill="none"/>
+          <path d="M 313,220 A 115,115 0 1,1 288,126 L 362,126 L 362,176 L 250,176 A 65,65 0 1,0 264,211 Z" fill="white"/>
+          <polyline points="183,183 168,200 183,217" stroke="rgba(255,255,255,0.6)" stroke-width="9" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <polyline points="217,183 232,200 217,217" stroke="rgba(255,255,255,0.6)" stroke-width="9" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <div>
+          <div class="var-name" style="color:#fff;">All White</div>
+          <div class="var-desc" style="color:rgba(255,255,255,0.5);">Use on any colored or dark background</div>
+          <div style="display:flex;gap:6px;margin-top:10px;justify-content:center;">
+            <div style="width:16px;height:16px;border-radius:4px;background:white;border:1px solid rgba(255,255,255,0.2);"></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── 04 Favicon / App Icon ── -->
+  <div class="section">
+    <div class="section-label">04 · Favicon &amp; App Icon</div>
+    <div class="scale-row">
+      <!-- 256px simulation -->
+      <div class="scale-item">
+        <svg width="86" height="86" viewBox="0 0 400 400" overflow="visible">
+          <rect width="400" height="400" rx="80" fill="#FAFAF7"/>
+          <circle cx="200" cy="200" r="155" stroke="#B8924A" stroke-width="16" fill="none"/>
+          <path d="M 313,220 A 115,115 0 1,1 288,126 L 362,126 L 362,176 L 250,176 A 65,65 0 1,0 264,211 Z" fill="#276229"/>
+          <polyline points="183,183 168,200 183,217" stroke="#B8924A" stroke-width="9" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <polyline points="217,183 232,200 217,217" stroke="#B8924A" stroke-width="9" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <div class="scale-px">App icon · 96px</div>
+      </div>
+
+      <!-- 64px -->
+      <div class="scale-item">
+        <svg width="58" height="58" viewBox="0 0 400 400" overflow="visible">
+          <rect width="400" height="400" rx="80" fill="#FAFAF7"/>
+          <circle cx="200" cy="200" r="155" stroke="#B8924A" stroke-width="16" fill="none"/>
+          <path d="M 313,220 A 115,115 0 1,1 288,126 L 362,126 L 362,176 L 250,176 A 65,65 0 1,0 264,211 Z" fill="#276229"/>
+          <polyline points="183,183 168,200 183,217" stroke="#B8924A" stroke-width="9" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <polyline points="217,183 232,200 217,217" stroke="#B8924A" stroke-width="9" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <div class="scale-px">64px</div>
+      </div>
+
+      <!-- 32px -->
+      <div class="scale-item">
+        <svg width="29" height="29" viewBox="0 0 400 400" overflow="visible">
+          <rect width="400" height="400" rx="80" fill="#FAFAF7"/>
+          <circle cx="200" cy="200" r="155" stroke="#B8924A" stroke-width="22" fill="none"/>
+          <path d="M 313,220 A 115,115 0 1,1 288,126 L 362,126 L 362,176 L 250,176 A 65,65 0 1,0 264,211 Z" fill="#276229"/>
+          <polyline points="183,183 168,200 183,217" stroke="#B8924A" stroke-width="12" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <polyline points="217,183 232,200 217,217" stroke="#B8924A" stroke-width="12" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <div class="scale-px">32px</div>
+      </div>
+
+      <!-- 16px -->
+      <div class="scale-item">
+        <svg width="16" height="16" viewBox="0 0 400 400">
+          <rect width="400" height="400" rx="80" fill="#B8924A"/>
+          <path d="M 313,220 A 115,115 0 1,1 288,126 L 362,126 L 362,176 L 250,176 A 65,65 0 1,0 264,211 Z" fill="#276229"/>
+        </svg>
+        <div class="scale-px">16px · simplified</div>
+      </div>
+
+      <div style="flex:1; border-left:1px solid rgba(0,0,0,0.08); padding-left:32px;">
+        <p style="font-size:13px;color:#6b7280;line-height:1.65;">
+          <strong style="color:#374151;">Scale note:</strong> At 32px and below, the <code style="font-size:11px;background:#f3f4f6;padding:2px 5px;border-radius:4px;">&lt; &gt;</code> brackets become invisible.
+          Drop them and increase the ring stroke weight for small sizes (favicon.ico, 16×16).
+          At 16px, simplify to solid gold background + green sigma only.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 05 On brand backgrounds ── -->
+  <div class="section">
+    <div class="section-label">05 · On brand hero backgrounds</div>
+    <div style="border-radius:16px;overflow:hidden;">
+      <div style="background:linear-gradient(135deg,#1e3a5f 0%,#0f2044 35%,#060c18 55%,#162d4a 75%,#0f2044 100%);padding:56px 64px;display:flex;align-items:center;gap:40px;">
+        <!-- icon -->
+        <svg width="80" height="80" viewBox="0 0 400 400" style="flex-shrink:0;">
+          <circle cx="200" cy="200" r="160" stroke="#B8924A" stroke-width="16" fill="none"/>
+          <path d="M 313,220 A 115,115 0 1,1 288,126 L 362,126 L 362,176 L 250,176 A 65,65 0 1,0 264,211 Z" fill="#276229"/>
+          <polyline points="183,183 168,200 183,217" stroke="#B8924A" stroke-width="9" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <polyline points="217,183 232,200 217,217" stroke="#B8924A" stroke-width="9" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <!-- wordmark -->
+        <svg height="44" viewBox="0 0 1050 200">
+          <text x="0" y="158" font-family="Montserrat,'Arial Black',sans-serif" font-weight="900" font-size="168" fill="white" letter-spacing="-4">ZIMPLIXI</text>
+          <g transform="translate(820,0) scale(1.04)">
+            <circle cx="100" cy="100" r="90" stroke="#B8924A" stroke-width="12" fill="none"/>
+            <path d="M 156,110 A 57,57 0 1,1 144,63 L 181,63 L 181,88 L 125,88 A 32,32 0 1,0 132,105 Z" fill="#276229"/>
+            <polyline points="92,91 84,100 92,109" stroke="#B8924A" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            <polyline points="108,91 116,100 108,109" stroke="#B8924A" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          </g>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Download / Export ── -->
+  <div class="download-note">
+    <div>
+      <div class="download-note-text">
+        <strong>These are clean SVG vectors</strong> — copy the SVG code below to use in Figma, Illustrator, or any design tool.
+        <span class="note-tag">∞ Scalable</span>
+      </div>
+      <div style="font-size:12px;color:#9ca3af;margin-top:6px;">Right-click any logo above → "Inspect element" to copy its SVG source, or use the button to copy the icon mark SVG.</div>
+    </div>
+    <button class="download-btn" id="copyBtn" onclick="copyIconSVG()">Copy Icon SVG</button>
+  </div>
+
+</div>
+
+<script>
+const iconSVG = `<svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+  <!-- Zimplixio Icon Mark — SVG vector, use at any size -->
+  <!-- Colors: ring=#B8924A (gold), sigma=#276229 (forest green), brackets=#B8924A -->
+  <circle cx="200" cy="200" r="160" stroke="#B8924A" stroke-width="16" fill="none"/>
+  <path d="M 313,220 A 115,115 0 1,1 288,126 L 362,126 L 362,176 L 250,176 A 65,65 0 1,0 264,211 Z" fill="#276229"/>
+  <polyline points="183,183 168,200 183,217" stroke="#B8924A" stroke-width="9" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <polyline points="217,183 232,200 217,217" stroke="#B8924A" stroke-width="9" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>`;
+
+function copyIconSVG() {
+  navigator.clipboard.writeText(iconSVG).then(() => {
+    const btn = document.getElementById('copyBtn');
+    btn.textContent = 'Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.textContent = 'Copy Icon SVG';
+      btn.classList.remove('copied');
+    }, 2000);
+  });
+}
+</script>
+
+</body>
+</html>
