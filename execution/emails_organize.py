@@ -9,11 +9,9 @@
 # Uses gmail.modify scope via a separate token (token_modify.json).
 
 import os
-from google.oauth2.credentials import Credentials
-from google_auth_oauthlib.flow import InstalledAppFlow
-from google.auth.transport.requests import Request
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
+from utils.gmail_auth import get_gmail_credentials
 
 SCOPES = ['https://www.googleapis.com/auth/gmail.modify']
 CREDENTIALS_FILE = 'credentials.json'
@@ -30,19 +28,7 @@ BATCH_SIZE = 500
 
 def authenticate():
     """Authenticate with gmail.modify scope and return service object."""
-    creds = None
-    if os.path.exists(TOKEN_FILE):
-        creds = Credentials.from_authorized_user_file(TOKEN_FILE, SCOPES)
-
-    if not creds or not creds.valid:
-        if creds and creds.expired and creds.refresh_token:
-            creds.refresh(Request())
-        else:
-            flow = InstalledAppFlow.from_client_secrets_file(CREDENTIALS_FILE, SCOPES)
-            creds = flow.run_local_server(port=0)
-        with open(TOKEN_FILE, 'w') as f:
-            f.write(creds.to_json())
-
+    creds = get_gmail_credentials(SCOPES, token_file=TOKEN_FILE, credentials_file=CREDENTIALS_FILE)
     return build('gmail', 'v1', credentials=creds)
 
 

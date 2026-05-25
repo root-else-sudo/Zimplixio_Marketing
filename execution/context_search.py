@@ -12,6 +12,7 @@ from datetime import datetime
 from dotenv import dotenv_values
 import anthropic
 from tavily import TavilyClient
+from utils import r2_storage
 
 _env = dotenv_values(os.path.join(os.path.dirname(__file__), '..', '.env'))
 os.environ.update({k: v for k, v in _env.items() if v})
@@ -52,15 +53,15 @@ ZIMPLIXIO_SERVICES = """
 
 
 def load_context() -> dict:
-    if not os.path.exists(CONTEXT_FILE):
-        return {'last_updated': datetime.now().isoformat(), 'sources': [], 'insights': [], 'search_run_count': 0}
-    with open(CONTEXT_FILE, 'r') as f:
-        return json.load(f)
+    return r2_storage.get_json(
+        'market_context.json',
+        local_fallback=CONTEXT_FILE,
+        default={'last_updated': datetime.now().isoformat(), 'sources': [], 'insights': [], 'search_run_count': 0},
+    )
 
 
 def save_context(data: dict):
-    with open(CONTEXT_FILE, 'w') as f:
-        json.dump(data, f, indent=2, ensure_ascii=False)
+    r2_storage.put_json('market_context.json', data, local_fallback=CONTEXT_FILE)
 
 
 def extract_insights(client: anthropic.Anthropic, search_results: list, query: str) -> list:

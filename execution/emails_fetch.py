@@ -5,11 +5,9 @@
 
 import os
 import json
-from google.oauth2.credentials import Credentials
-from google_auth_oauthlib.flow import InstalledAppFlow
-from google.auth.transport.requests import Request
 from googleapiclient.discovery import build
 from dotenv import load_dotenv
+from utils.gmail_auth import get_gmail_credentials
 
 load_dotenv()
 
@@ -28,25 +26,7 @@ OUTPUT_FILE = 'tmp/emails_raw.json'
 
 def authenticate():
     """Authenticate with Gmail API and return service object."""
-    creds = None
-
-    # Load existing token if available
-    if os.path.exists(TOKEN_FILE):
-        creds = Credentials.from_authorized_user_file(TOKEN_FILE, SCOPES)
-
-    # If no valid credentials, prompt user to log in
-    if not creds or not creds.valid:
-        if creds and creds.expired and creds.refresh_token:
-            creds.refresh(Request())
-        else:
-            flow = InstalledAppFlow.from_client_secrets_file(
-                CREDENTIALS_FILE, SCOPES)
-            creds = flow.run_local_server(port=0)
-
-        # Save token for future runs
-        with open(TOKEN_FILE, 'w') as token:
-            token.write(creds.to_json())
-
+    creds = get_gmail_credentials(SCOPES, token_file=TOKEN_FILE, credentials_file=CREDENTIALS_FILE)
     return build('gmail', 'v1', credentials=creds)
 
 

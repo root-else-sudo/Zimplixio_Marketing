@@ -12,6 +12,7 @@ import requests
 from datetime import datetime, timedelta
 from dotenv import dotenv_values
 import anthropic
+from utils import r2_storage
 
 _env = dotenv_values(os.path.join(os.path.dirname(__file__), '..', '.env'))
 os.environ.update({k: v for k, v in _env.items() if v})
@@ -19,7 +20,7 @@ os.environ.update({k: v for k, v in _env.items() if v})
 OUTPUT_FILE = 'tmp/market_context.json'
 CACHE_DAYS = 7
 
-PDF_PATH = os.path.expanduser('~/Desktop/smb-trends-report-6th-edition_Salesforce.pdf')
+PDF_PATH = os.environ.get('PDF_REPORT_PATH', os.path.expanduser('~/Desktop/smb-trends-report-6th-edition_Salesforce.pdf'))
 
 FIXED_URLS = [
     'https://www.salesforce.com/news/stories/smbs-agentic-ai-results/',
@@ -112,11 +113,10 @@ PRELOADED_INSIGHTS = [
 
 
 def is_cache_fresh() -> bool:
-    if not os.path.exists(OUTPUT_FILE):
+    data = r2_storage.get_json('market_context.json', local_fallback=OUTPUT_FILE)
+    if not data:
         return False
     try:
-        with open(OUTPUT_FILE, 'r') as f:
-            data = json.load(f)
         last_updated = datetime.fromisoformat(data.get('last_updated', '2000-01-01'))
         return datetime.now() - last_updated < timedelta(days=CACHE_DAYS)
     except Exception:
@@ -208,8 +208,7 @@ def main():
         'insights': all_insights,
     }
 
-    with open(OUTPUT_FILE, 'w') as f:
-        json.dump(output, f, indent=2, ensure_ascii=False)
+    r2_storage.put_json('market_context.json', output, local_fallback=OUTPUT_FILE)
 
     print(f"\nDone. {len(all_insights)} total insights saved to {OUTPUT_FILE}")
 

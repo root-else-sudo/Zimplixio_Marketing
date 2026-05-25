@@ -15,6 +15,7 @@ from datetime import datetime
 from dotenv import dotenv_values
 import anthropic
 from tavily import TavilyClient
+from utils import r2_storage
 
 _env = dotenv_values(os.path.join(os.path.dirname(__file__), '..', '.env'))
 os.environ.update({k: v for k, v in _env.items() if v})
@@ -127,14 +128,7 @@ Angle: "We built ourselves an agent that monitors SMB trends and proposes Linked
 
 
 def load_market_context() -> list:
-    if not os.path.exists(CONTEXT_FILE):
-        return []
-    try:
-        with open(CONTEXT_FILE, 'r') as f:
-            data = json.load(f)
-        return data.get('insights', [])
-    except Exception:
-        return []
+    return r2_storage.get_json('market_context.json', local_fallback=CONTEXT_FILE, default={'insights': []}).get('insights', [])
 
 
 def pick_relevant_insight(insights: list, signal_text: str, used_indices: set) -> dict | None:
