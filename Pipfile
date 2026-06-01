@@ -9,6 +9,9 @@ google-auth-oauthlib = "*"
 google-auth-httplib2 = "*"
 google-api-python-client = "*"
 python-dotenv = "*"
+anthropic = "*"
+tavily-python = "*"
+boto3 = "*"
 
 [dev-packages]
 
