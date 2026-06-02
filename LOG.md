@@ -1,3 +1,14 @@
+## 2026-06-02 - posts_save.py removed from pipeline
+
+- **Status:** Production ready
+- **Issue:** N/A — deliberate removal
+- **Notes:**
+  - `posts_save.py` was removed from `pipeline.config.json`. The script still exists but is no longer part of the pipeline.
+  - Posts are ingested into PostgreSQL by the Zimplixio Office worker after all scripts complete. The local `.md` files in `posts/` served no purpose in production (ephemeral container filesystem) and the CRM dashboard replaces them entirely.
+  - `posts_save.py` can still be run manually for local inspection if needed.
+
+---
+
 ## 2026-06-01 - Production deployment & OAuth
 
 - **Status:** Production ready

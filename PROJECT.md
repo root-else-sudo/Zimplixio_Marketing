@@ -17,15 +17,14 @@ Automate a pipeline that turns newsletter emails into LinkedIn post drafts for Z
 | 4 | `context_fetch.py` | PDF + fixed URLs | `tmp/market_context.json` (cached 7 days) | Production |
 | 5 | `context_search.py` | Tavily search → appends to `tmp/market_context.json` | `tmp/market_context.json` (updated) | Production |
 | 6 | `posts_generate.py` | `tmp/emails_filtered.json` + `tmp/market_context.json` | `tmp/posts_draft.json` | Production |
-| 7 | `posts_save.py` | `tmp/posts_draft.json` | `posts/YYYY-MM/YYYY-MM-DD/*.md` | Production |
-| 8 | `emails_organize.py` | Gmail API | Labels and archives processed emails | Production |
+| 7 | `emails_organize.py` | Gmail API | Labels and archives processed emails | Production |
 
 ### Run order
 Defined in `pipeline.config.json` — the single source of truth for script execution order. Both `run_pipeline.sh` (cron) and the Zimplixio Office API (`/api/pipeline`) read from this file. To add, remove, or reorder steps, edit only this file.
 
 ```json
 ["emails_fetch", "emails_parse", "emails_filter", "context_fetch",
- "context_search", "posts_generate", "posts_save", "emails_organize"]
+ "context_search", "posts_generate", "emails_organize"]
 ```
 
 ### Standalone scripts (not in main pipeline)
