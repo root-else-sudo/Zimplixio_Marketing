@@ -3,6 +3,7 @@
 .env
 credentials.json
 token.json
+token_modify.json
 
 # Temporary files
 tmp/
