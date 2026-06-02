@@ -62,8 +62,8 @@ Folder structure managed by `execution/folders_manage.py`.
 ---
 
 ## Schedule
-- Runs automatically **Tue/Thu/Fri at 1 PM** via local cron job
-- Entry point: `run_pipeline.sh` — logs every run to `tmp/pipeline_run.log`
+- **Production (Railway):** triggered on-demand from the Zimplixio Office dashboard (`crm.zimplixio.com`) — web service enqueues a pg-boss job, Worker service picks it up and runs the pipeline
+- **Local (cron):** runs automatically **Tue/Thu/Fri at 1 PM** via `run_pipeline.sh` — logs to `tmp/pipeline_run.log`
 - Note: the Zimplixio Office agent record displays `0 11 * * 1-5` as its cron schedule — this is cosmetic/display only and does not reflect the actual cron timing.
 
 ---

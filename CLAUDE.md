@@ -126,6 +126,31 @@ Each step maps to a rule already defined in this document:
 
 ---
 
+## Local Development Notes
+
+### Running scripts locally
+Scripts must be run from the **project root** (not from inside `execution/`) with `PYTHONPATH=execution` so imports resolve correctly:
+
+```bash
+cd /Users/josephugaldeberrocal/Documents/Zimplixio_Marketing
+PYTHONPATH=execution python execution/<script>.py
+```
+
+Running from inside `execution/` will cause `FileNotFoundError` for `credentials.json` and `token*.json` (which live at the project root).
+
+### Google OAuth tokens
+The OAuth app (`zimplixio-marketing`) is **published to Production** — tokens do not expire on a 7-day cycle. If you see `invalid_grant: Bad Request` in production logs, regenerate both tokens:
+
+```bash
+rm token.json token_modify.json
+PYTHONPATH=execution python execution/emails_fetch.py      # → token.json
+PYTHONPATH=execution python execution/emails_organize.py   # → token_modify.json
+```
+
+Extract refresh tokens and update `GMAIL_REFRESH_TOKEN_READONLY` / `GMAIL_REFRESH_TOKEN_MODIFY` in Railway Worker env vars.
+
+---
+
 ## Connected Project: Zimplixio Office
 
 The web dashboard lives at `../zimplixio-office/`. It is the control center that:
@@ -135,6 +160,8 @@ The web dashboard lives at `../zimplixio-office/`. It is the control center that
 - Displays run history, post drafts for review, and business opportunities
 
 **Critical:** `pipeline.config.json` is read by both `run_pipeline.sh` and the Office API. Editing it changes both at once — never hardcode the script list anywhere else.
+
+In production (`PIPELINE_USE_QUEUE=true`), the Office web service enqueues a pg-boss job. The Worker service clones this repo at startup (`/app/marketing`), sets `MARKETING_DIR=/app/marketing`, and processes the job by running the scripts sequentially. R2 is used for `market_context.json` caching (bucket: `zimplixio-marketing`).
 
 ---
 

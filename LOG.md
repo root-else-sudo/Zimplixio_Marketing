@@ -1,3 +1,16 @@
+## 2026-06-01 - Production deployment & OAuth
+
+- **Status:** Production ready
+- **Issue:** Pipeline failed on first production run with `invalid_grant: Bad Request` on `emails_fetch.py`. Root cause: Google OAuth app was in **Testing** mode, causing refresh tokens to expire after 7 days. Token in Railway had been issued ~30 days prior.
+- **Fix:** Published OAuth app to Production in Google Cloud Console (Google Auth Platform → Audience → Publish app). Deleted both `token.json` and `token_modify.json`, re-ran OAuth flows for both scopes, extracted fresh refresh tokens, updated Railway Worker env vars `GMAIL_REFRESH_TOKEN_READONLY` and `GMAIL_REFRESH_TOKEN_MODIFY`.
+- **Notes:**
+  - Scripts must run from project root with `PYTHONPATH=execution python execution/<script>.py` — running from inside `execution/` causes `FileNotFoundError` for `credentials.json`
+  - R2 bucket `zimplixio-marketing` created in Cloudflare; token uses "Account API Token" (S3-compatible), not the `cfat_` Cloudflare API token
+  - Python `.venv` must be rebuilt for arm64 on Apple Silicon if architecture changes: `PIPENV_VENV_IN_PROJECT=1 pipenv install`
+  - Pipeline verified end-to-end in production: all 8 steps completed, posts ingested to PostgreSQL
+
+---
+
 ## 2026-05-02 - opportunities_find.py
 
 - **Status:** Production ready
