@@ -65,6 +65,16 @@ class TestPickOutcomePatternByIndex:
             pattern = pick_outcome_pattern_by_index(context)
             assert pattern == OUTCOME_PATTERNS[i]
 
+    def test_full_cycle_wraps_back_to_start(self):
+        n = len(OUTCOME_PATTERNS)
+        context = {'outcome_pattern_index': n - 1}
+        # Last pattern
+        last = pick_outcome_pattern_by_index(context)
+        assert last == OUTCOME_PATTERNS[n - 1]
+        # Next call wraps to first
+        first = pick_outcome_pattern_by_index(context)
+        assert first == OUTCOME_PATTERNS[0]
+
 
 class TestExtractHook:
     def test_returns_first_non_empty_line(self):
@@ -84,6 +94,10 @@ class TestExtractHook:
     def test_returns_empty_string_for_blank_post(self):
         assert extract_hook("") == ""
         assert extract_hook("   \n\n   ") == ""
+
+    def test_handles_leading_blank_lines(self):
+        post = "   \n\n   \n\nContent here"
+        assert extract_hook(post) == "Content here"
 
 
 class TestBuildSystemPrompt:
@@ -106,5 +120,6 @@ class TestBuildSystemPrompt:
 
     def test_base_content_always_present(self):
         result = build_system_prompt(["some hook"])
-        assert "Zimplixio" in result
+        assert "AVOID REPEATING" in result
+        assert "- some hook" in result
         assert "HOOK" in result
