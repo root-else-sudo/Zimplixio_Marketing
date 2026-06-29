@@ -69,7 +69,7 @@ OUTCOME_PATTERNS = [
     },
 ]
 
-SYSTEM_PROMPT = """You write LinkedIn posts for Zimplixio. Zimplixio helps small and medium businesses run better using technology — AI tools, custom software, data pipelines, ERP integrations, and agentic workflows.
+SYSTEM_PROMPT_BASE = """You write LinkedIn posts for Zimplixio. Zimplixio helps small and medium businesses run better using technology — AI tools, custom software, data pipelines, ERP integrations, and agentic workflows.
 
 The audience is owners and managers at companies with 5 to 200 employees. Busy, practical people who care about saving time, cutting costs, and growing. They are not technical. They do not follow tech news.
 
@@ -236,11 +236,11 @@ def _format_insight(insight: dict | None) -> str:
     )
 
 
-def generate(client: anthropic.Anthropic, prompt: str) -> str:
+def generate(client: anthropic.Anthropic, prompt: str, system: str) -> str:
     message = client.messages.create(
         model='claude-sonnet-4-6',
         max_tokens=600,
-        system=SYSTEM_PROMPT,
+        system=system,
         messages=[{'role': 'user', 'content': prompt}]
     )
     return message.content[0].text.strip()
@@ -251,6 +251,36 @@ def slugify(text: str) -> str:
     text = re.sub(r'[^\w\s-]', '', text)
     text = re.sub(r'[\s_-]+', '-', text)
     return text[:50].strip('-')
+
+
+def pick_research_query_indices(tavily_run_count: int, num_queries: int) -> list[int]:
+    return [(tavily_run_count + i) % num_queries for i in range(2)]
+
+
+def pick_outcome_pattern_by_index(context: dict) -> dict:
+    idx = context.get('outcome_pattern_index', 0)
+    pattern = OUTCOME_PATTERNS[idx % len(OUTCOME_PATTERNS)]
+    context['outcome_pattern_index'] = idx + 1
+    return pattern
+
+
+def extract_hook(post_text: str) -> str:
+    for line in post_text.split('\n'):
+        line = line.strip()
+        if line:
+            return line[:150]
+    return ''
+
+
+def build_system_prompt(recent_hooks: list[str]) -> str:
+    if not recent_hooks:
+        return SYSTEM_PROMPT_BASE
+    hooks_list = '\n'.join(f'- {h}' for h in recent_hooks[-5:])
+    return (
+        SYSTEM_PROMPT_BASE
+        + f'\n\n--- AVOID REPEATING ---\n'
+        + f'Do not reuse these opening hooks or angles from recent posts:\n{hooks_list}'
+    )
 
 
 def main():
