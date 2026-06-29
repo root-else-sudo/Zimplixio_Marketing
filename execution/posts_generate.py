@@ -236,7 +236,7 @@ def _format_insight(insight: dict | None) -> str:
     )
 
 
-def generate(client: anthropic.Anthropic, prompt: str, system: str) -> str:
+def generate(client: anthropic.Anthropic, prompt: str, system: str = SYSTEM_PROMPT_BASE) -> str:
     message = client.messages.create(
         model='claude-sonnet-4-6',
         max_tokens=600,
