@@ -44,7 +44,7 @@ Project documentation lives across three files:
 ### Layer 3: Execution (Doing the work)
 
 - All execution happens through deterministic Python scripts stored in `execution/`. Never do directly what a script can do
-- **Scripts follow a strict naming convention:** `noun_verb.py` — what it operates on, then what it does. Examples: `emails_fetch.py`, `emails_parse.py`, `emails_filter.py`, `context_fetch.py`, `posts_generate.py`, `posts_save.py`, `emails_organize.py`
+- **Scripts follow a strict naming convention:** `noun_verb.py` — what it operates on, then what it does. Examples: `emails_fetch.py`, `emails_parse.py`, `emails_filter.py`, `context_fetch.py`, `posts_generate.py`, `emails_organize.py`
 - **Pipeline execution order is defined in `pipeline.config.json`** — the single source of truth. Both `run_pipeline.sh` (local cron) and the Zimplixio Office API (`/api/pipeline`) read from this file. To add, remove, or reorder steps, edit only this file
 - All credentials, API tokens, and environment variables are stored in `.env`. Never hardcode sensitive data inside scripts
 - Scripts are responsible for: API calls, data processing, file operations, and database interactions
@@ -113,7 +113,7 @@ Each step maps to a rule already defined in this document:
 - `tmp/` — All intermediate files (dossiers, scraped data, temp exports). Never commit, always regenerated.
 - `execution/` — Python scripts (the deterministic tools)
 - `directives/` — SOPs in Markdown, one file per workflow
-- `posts/` — Permanent output of generated LinkedIn drafts, organized as `YYYY-MM/YYYY-MM-DD/*.md`
+- `posts/` — Legacy local markdown output (no longer written by the pipeline; posts are stored in PostgreSQL via Zimplixio Office). Kept for reference only.
 - `pipeline.config.json` — Single source of truth for pipeline script order
 - `run_pipeline.sh` — Local cron entry point; reads `pipeline.config.json` and logs to `tmp/pipeline_run.log`
 - `.env` — Environment variables and API keys
