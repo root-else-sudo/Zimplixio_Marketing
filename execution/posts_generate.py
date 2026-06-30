@@ -131,6 +131,26 @@ def load_market_context() -> list:
     return r2_storage.get_json('market_context.json', local_fallback=CONTEXT_FILE, default={'insights': []}).get('insights', [])
 
 
+def load_context() -> dict:
+    return r2_storage.get_json(
+        'market_context.json',
+        local_fallback=CONTEXT_FILE,
+        default={
+            'last_updated': '',
+            'sources': [],
+            'insights': [],
+            'search_run_count': 0,
+            'tavily_run_count': 0,
+            'outcome_pattern_index': 0,
+            'recent_hooks': [],
+        },
+    )
+
+
+def save_context(data: dict):
+    r2_storage.put_json('market_context.json', data, local_fallback=CONTEXT_FILE)
+
+
 def pick_relevant_insight(insights: list, signal_text: str, used_indices: set) -> dict | None:
     if not insights:
         return None
@@ -165,17 +185,6 @@ def pick_relevant_insight(insights: list, signal_text: str, used_indices: set) -
     _, best_idx, best_insight = scored[0]
     used_indices.add(best_idx)
     return best_insight
-
-
-def pick_outcome_pattern(recent_signals: list) -> dict:
-    """Let the agent pick the best outcome pattern based on recent content."""
-    signal_text = ' '.join(recent_signals).lower()
-    scored = []
-    for pattern in OUTCOME_PATTERNS:
-        score = sum(1 for kw in pattern['trigger_keywords'] if kw in signal_text)
-        scored.append((score, random.random(), pattern))
-    scored.sort(key=lambda x: (-x[0], x[1]))
-    return scored[0][2]
 
 
 def build_prompt_email(email: dict, insight: dict | None) -> str:
@@ -297,8 +306,11 @@ def main():
         if not isinstance(emails, list):
             emails = []
 
-    market_insights = load_market_context()
-    print(f"  Loaded {len(market_insights)} market insights")
+    context = load_context()
+    market_insights = context.get('insights', [])
+    recent_hooks: list[str] = context.get('recent_hooks', [])
+    system_prompt = build_system_prompt(recent_hooks)
+    print(f"  Loaded {len(market_insights)} market insights, {len(recent_hooks)} recent hooks")
 
     client = anthropic.Anthropic(api_key=api_key)
     tavily = TavilyClient(api_key=tavily_key) if tavily_key else None
@@ -317,7 +329,7 @@ def main():
 
         print(f"  [email] {newsletter} — {subject[:50]}")
         try:
-            post_text = generate(client, build_prompt_email(email, insight))
+            post_text = generate(client, build_prompt_email(email, insight), system_prompt)
             drafts.append({
                 'source_type': 'email',
                 'newsletter': newsletter,
@@ -333,16 +345,17 @@ def main():
 
     # ── Source 2: Tavily market research posts (2) ────────────────────────────
     if tavily:
-        run_count = len(drafts)
-        for i in range(2):
-            query_idx = (run_count + i) % len(TAVILY_RESEARCH_QUERIES)
+        tavily_run_count = context.get('tavily_run_count', 0)
+        query_indices = pick_research_query_indices(tavily_run_count, len(TAVILY_RESEARCH_QUERIES))
+        context['tavily_run_count'] = tavily_run_count + 2
+        for query_idx in query_indices:
             query = TAVILY_RESEARCH_QUERIES[query_idx]
             print(f"  [research] {query[:60]}")
             try:
-                response = tavily.search(query=query, search_depth='advanced', max_results=4)
+                response = tavily.search(query=query, search_depth='advanced', max_results=4, days=14)
                 results = response.get('results', [])
                 insight = pick_relevant_insight(market_insights, query.lower(), used_insight_indices)
-                post_text = generate(client, build_prompt_research(query, results, insight))
+                post_text = generate(client, build_prompt_research(query, results, insight), system_prompt)
                 drafts.append({
                     'source_type': 'research',
                     'newsletter': 'Market Research',
@@ -359,12 +372,11 @@ def main():
         print("  [research] Skipped — TAVILY_API_KEY not set")
 
     # ── Source 3: Zimplixio-owned outcome post (1) ────────────────────────────
-    recent_signals = [d.get('source_subject', '') for d in drafts]
-    pattern = pick_outcome_pattern(recent_signals)
+    pattern = pick_outcome_pattern_by_index(context)
     print(f"  [owned] Outcome pattern: {pattern['type']}")
     try:
         insight = pick_relevant_insight(market_insights, pattern['type'].lower(), used_insight_indices)
-        post_text = generate(client, build_prompt_owned(pattern, insight))
+        post_text = generate(client, build_prompt_owned(pattern, insight), system_prompt)
         drafts.append({
             'source_type': 'owned',
             'newsletter': 'Zimplixio',
@@ -382,6 +394,7 @@ def main():
     with open(OUTPUT_FILE, 'w') as f:
         json.dump(drafts, f, indent=2, ensure_ascii=False)
 
+    save_context(context)
     print(f"\nDone. {len(drafts)} posts generated ({len(errors)} errors). Output: {OUTPUT_FILE}")
 
 
