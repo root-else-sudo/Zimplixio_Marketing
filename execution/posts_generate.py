@@ -24,107 +24,86 @@ INPUT_FILE = 'tmp/emails_filtered.json'
 CONTEXT_FILE = 'tmp/market_context.json'
 OUTPUT_FILE = 'tmp/posts_draft.json'
 
-# Rotating Tavily queries for market research posts
+# Rotating Tavily queries — operational pain by industry, recency enforced via days=14
 TAVILY_RESEARCH_QUERIES = [
-    'small business AI automation productivity gains 2025',
-    'SMB data management workflow efficiency statistics',
-    'small business technology adoption challenges USA 2025',
-    'SMB ERP integration benefits operational visibility',
-    'agentic AI small business use cases ROI',
-    'small business manual process automation cost savings',
-    'SMB cloud migration benefits growing business',
-    'small business digital transformation success stories 2025',
+    'trucking fleet dispatch scheduling software problems small business',
+    'HVAC field service company scheduling errors lost jobs revenue',
+    'food distribution inventory tracking manual process failures operations',
+    'construction subcontractor data management scheduling spreadsheet problems',
+    'small business payroll errors manual time tracking cost productivity',
+    'pest control field service mobile app adoption challenges',
+    'waste management route optimization technology gap small fleet',
+    'service company quoting estimating manual pricing errors lost revenue',
+    'small business developer abandoned incomplete custom software project',
+    'operations director manual reporting disconnected systems data silos',
+    'delivery company driver dispatch scheduling technology problems',
+    'field service company paper work orders digital transformation barriers',
 ]
 
 OUTCOME_PATTERNS = [
     {
-        'type': 'Spreadsheet → system',
-        'angle': 'A business running entirely on spreadsheets. One wrong formula away from a crisis. We built them a custom app backed by a real database. Nothing changed about the business — everything changed about how it operated.',
-        'trigger_keywords': ['manual', 'spreadsheet', 'data', 'process', 'error', 'scaling'],
+        'type': 'Dispatch on spreadsheets',
+        'angle': 'A delivery or field service business managing schedules on a shared spreadsheet. Someone always overwrites someone else. Jobs go out with errors. Crews show up to the wrong location. They replaced the spreadsheet with a simple dispatch tool. Same team, same routes — no more morning chaos.',
+        'trigger_keywords': ['dispatch', 'route', 'schedule', 'driver', 'delivery', 'field', 'crew'],
     },
     {
-        'type': 'Desktop → SaaS',
-        'angle': 'A client had a working desktop app. It worked, but it could not scale, could not be accessed remotely, and could not grow. We rebuilt it as a SaaS product. Same core logic — completely different business model and growth ceiling.',
-        'trigger_keywords': ['software', 'product', 'modernization', 'saas', 'desktop', 'scale'],
+        'type': 'Paper-based field operations',
+        'angle': 'Technicians filling out paper forms in the field. Back at the office, someone types the same data into a system. Errors, delays, lost forms. They went digital — mobile forms, instant sync, no re-entry. The data is in the system before the tech drives back.',
+        'trigger_keywords': ['field', 'technician', 'paper', 'form', 'mobile', 'service', 'inspection'],
     },
     {
-        'type': 'Failed project rescue',
-        'angle': 'The previous contractor walked away. Critical data sat incomplete and unusable. We came in, finished the job, and got the business moving again. This is an underused angle — it signals credibility and technical depth without sounding salesy.',
-        'trigger_keywords': ['contractor', 'debt', 'incomplete', 'failed', 'rescue', 'trust'],
+        'type': 'No reporting visibility',
+        'angle': "A business running 50 people with no dashboard. The owner checks in by calling managers. Nobody knows the real numbers until the books close at month end. They built a simple data pipeline connecting three systems into one view. Now the owner sees yesterday's numbers this morning.",
+        'trigger_keywords': ['reporting', 'data', 'visibility', 'dashboard', 'numbers', 'analytics'],
     },
     {
-        'type': 'ERP integration',
-        'angle': 'ERPs are islands. Data sits inside them but cannot get out in a useful form. We connect them — to each other, to custom apps, to reporting layers — so the business can finally see what is actually happening.',
-        'trigger_keywords': ['erp', 'silo', 'reporting', 'data', 'integration', 'visibility'],
+        'type': 'Manual payroll and time tracking',
+        'angle': 'Employees calling in their hours. A manager writing it down, transferring it to a spreadsheet, sending it to payroll. Every week, the same process. One wrong entry and the check is wrong. They automated the handoff. Timesheets go straight to payroll without anyone touching them in between.',
+        'trigger_keywords': ['payroll', 'hours', 'timesheet', 'overtime', 'manual', 'wage', 'labor'],
     },
     {
-        'type': 'Agentic automation',
-        'angle': 'A human being was the bridge between systems. Extract data, move it, trigger the next step, send the notification, update the record. Every day. Manually. An agent does it instead. The human sets the rules once.',
-        'trigger_keywords': ['ai', 'agent', 'automation', 'workflow', 'productivity', 'headcount'],
+        'type': 'Disconnected quoting and billing',
+        'angle': 'A service business building quotes in Word. Copying from old quotes, changing numbers by hand. When pricing changes, old quotes sit in inboxes uncorrected. They built a quoting tool connected to their actual price list. Quotes go out in minutes and the numbers are always right.',
+        'trigger_keywords': ['quote', 'estimate', 'pricing', 'proposal', 'invoice', 'billing', 'contract'],
     },
     {
-        'type': 'Custom reporting',
-        'angle': 'The business was making decisions on gut feelings and incomplete information. We built a reporting layer on top of their live data. Now they know what is actually happening — before it becomes a problem.',
-        'trigger_keywords': ['reporting', 'decision', 'forecast', 'analytics', 'data', 'visibility'],
+        'type': 'Failed software project rescue',
+        'angle': 'They hired a developer. Paid a deposit. Got a half-built app and then silence. Now they have software nobody can finish and a business problem still unsolved. A new team came in to pick up where the other left off — not to rebuild from scratch, but to finish the job.',
+        'trigger_keywords': ['contractor', 'developer', 'incomplete', 'abandoned', 'project', 'rescue', 'debt'],
     },
 ]
 
-SYSTEM_PROMPT_BASE = """You write LinkedIn posts for Zimplixio. Zimplixio helps small and medium businesses run better using technology — AI tools, custom software, data pipelines, ERP integrations, and agentic workflows.
+SYSTEM_PROMPT_BASE = """You write LinkedIn posts for Zimplixio, a technology contractor that helps operationally complex small businesses fix the systems that are slowing them down.
 
-The audience is owners and managers at companies with 5 to 200 employees. Busy, practical people who care about saving time, cutting costs, and growing. They are not technical. They do not follow tech news.
+The businesses Zimplixio serves run real operations: delivery fleets, field service crews, distribution centers, construction sites, service routes. They cannot attract software engineers. They make decisions on spreadsheets, phone calls, and gut feeling. They know something is broken but do not know it can be fixed.
 
---- STRUCTURE ---
+Zimplixio's three core services:
+- AI and agentic automation — replacing manual, repetitive workflows with software that runs on its own
+- Data engineering and automation — connecting systems and building dashboards so owners can see what is actually happening in real time
+- Custom software and integrations — building apps and connecting tools when off-the-shelf software does not fit the operation
 
-HOOK (lines 1–2):
-The hook must work before LinkedIn's "see more" cut-off — first 1 to 2 short lines. Max 1 sentence per line.
-Rotate through these formulas:
-  - Confession: "I spent X years doing [thing] wrong."
-  - Pattern interrupt: "Nobody talks about the hardest part of [topic]."
-  - Provocation: a short contrarian take that stops the scroll.
-  - List tease: "3 things I wish I knew before [milestone]."
-  - Story promise: "We [achieved result]. Here's exactly how."
-  - Bold statement: a direct claim about an opportunity.
-  - Question: a thought-provoking question.
-Never open with "I'm excited to share", "Did you know", or any weak filler line.
+Every post follows this structure:
 
-[blank line]
+1. HOOK (1–2 lines): Open with a specific operational pain that a business owner or ops manager would recognize as their exact situation. Lead with the pain, not the industry. No statistics in the hook. No buzzwords. Make them stop scrolling.
 
-BODY (3 to 5 short paragraphs):
-Use 1 to 2 sentences per paragraph — never more. One idea per line. Blank line between each paragraph.
-Alternate between narrative and bullet formats (✓ or → markers).
-Keep it concrete. Advisor tone, not consultant tone.
+2. BODY (3–4 short paragraphs): One idea per paragraph. One to two sentences each. Be concrete — reference real operational details: routes, crews, timesheets, work orders, invoices, quotes, job tickets. Describe what changed without naming Zimplixio or sounding like an ad.
 
-[blank line]
+3. OUTCOME (1–2 sentences): What the business can now do that it could not do before. A real capability or relief, not a revenue number.
 
-CTA (1 line):
-No URL in the post body — links go in the first comment.
-Format: "If you want [specific outcome], book a free call — link in the first comment 👇"
+4. CLOSE (1 line): A question or direct statement that makes the reader feel seen and understood.
 
---- FORMATTING RULES ---
-- Every section separated by a blank line.
-- 1 to 2 emojis max as visual anchors, not decoration.
-- Special characters allowed: → ✓ |
-- No hashtags. No URLs in the post body.
-- Total length: 120 to 150 words.
+Voice rules:
+- Short sentences. No sentence longer than 20 words.
+- Plain language. Write like you talk to a peer who runs a business.
+- Never use: leverage, synergy, scalability, digital transformation, robust, seamless, holistic, revolutionize, game-changer, unlock, harness, elevate, empower, cutting-edge, enterprise-grade, ecosystem, paradigm
+- Do not name Zimplixio in the post body
+- Do not open with "I" or with a statistic
+- No emojis
+- No hashtags
+- No URLs in the post body
+- 150 to 200 words total
 
---- VOICE RULES ---
-- Plain language. 8th grade reading level. Write like you talk.
-- Forbidden: leverage, ecosystem, paradigm, synergy, enterprise-grade, cutting-edge, navigate, landscape, seamless, robust, empower, revolutionize, transform, game-changer, unlock, harness, elevate.
-- Positive and opportunity-focused. No fear, no warnings, no doom.
-
---- ZIMPLIXIO OUTCOME PATTERNS ---
-| Outcome | Post angle |
-|---|---|
-| Spreadsheet → system | Business on spreadsheets gets a custom app + real database. Nothing changed about the business — everything changed about how it operated. |
-| Desktop → SaaS | Working desktop app rebuilt as SaaS. Same logic — different business model and growth ceiling. |
-| Failed project rescue | Previous contractor walked away. We finished the job. Signals credibility without sounding salesy. |
-| ERP integration | ERPs are islands. We connect them so the business can see what's actually happening. |
-| Agentic automation | Human was the bridge between systems. Agent does it instead. Rules set once. |
-| Custom reporting | Stopped making gut decisions. Started working from live data they trust. |
-
---- ZIMPLIXIO PROOF LOOP ---
-When topic is AI/automation/agentic: Zimplixio built its own content agent — monitors SMB trends, matches to services, proposes posts daily. Every post is proof agentic workflows work for small businesses.
-Angle: "We built ourselves an agent that monitors SMB trends and proposes LinkedIn posts every morning. Research done, hook written, data sourced. This is what we build for clients." """
+The reader is the owner or the operations director of a 20–200 person business in an industry that does not attract software engineers. They feel stuck. They know something is broken. They do not know it can be fixed."""
 
 
 def load_market_context() -> list:
