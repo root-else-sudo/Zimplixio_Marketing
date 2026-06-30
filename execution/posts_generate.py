@@ -330,6 +330,7 @@ def main():
         print(f"  [email] {newsletter} — {subject[:50]}")
         try:
             post_text = generate(client, build_prompt_email(email, insight), system_prompt)
+            recent_hooks.append(extract_hook(post_text))
             drafts.append({
                 'source_type': 'email',
                 'newsletter': newsletter,
@@ -356,6 +357,7 @@ def main():
                 results = response.get('results', [])
                 insight = pick_relevant_insight(market_insights, query.lower(), used_insight_indices)
                 post_text = generate(client, build_prompt_research(query, results, insight), system_prompt)
+                recent_hooks.append(extract_hook(post_text))
                 drafts.append({
                     'source_type': 'research',
                     'newsletter': 'Market Research',
@@ -377,6 +379,7 @@ def main():
     try:
         insight = pick_relevant_insight(market_insights, pattern['type'].lower(), used_insight_indices)
         post_text = generate(client, build_prompt_owned(pattern, insight), system_prompt)
+        recent_hooks.append(extract_hook(post_text))
         drafts.append({
             'source_type': 'owned',
             'newsletter': 'Zimplixio',
@@ -394,6 +397,7 @@ def main():
     with open(OUTPUT_FILE, 'w') as f:
         json.dump(drafts, f, indent=2, ensure_ascii=False)
 
+    context['recent_hooks'] = recent_hooks[-10:]
     save_context(context)
     print(f"\nDone. {len(drafts)} posts generated ({len(errors)} errors). Output: {OUTPUT_FILE}")
 
