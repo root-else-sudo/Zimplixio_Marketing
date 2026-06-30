@@ -208,7 +208,7 @@ def build_prompt_owned(pattern: dict, insight: dict | None) -> str:
         f"Angle to use: {pattern['angle']}\n"
         f"{context_block}\n"
         f"Write a Zimplixio LinkedIn post using this outcome pattern as the foundation. "
-        f"Make it feel like a real story, not a case study. First person, specific, credible."
+        f"Make it feel like a real story, not a case study. Write as if recounting a client situation — specific, credible, past-tense."
     )
 
 
