@@ -21,26 +21,28 @@ CONTEXT_FILE = 'tmp/market_context.json'
 
 # Rotating search queries — picked round-robin each run
 SEARCH_QUERIES = [
-    'SMB small business AI automation adoption statistics 2025',
-    'small business technology investment trends USA 2025',
-    'SMB data management challenges statistics report',
-    'small business workflow automation ROI results',
-    'SMB AI readiness gap enterprise vs small business 2025',
-    'small business manual processes cost productivity loss',
-    'SMB cloud migration benefits statistics',
-    'small business digital transformation challenges 2025',
-    'AI agents agentic automation small business use cases',
-    'SMB data quality revenue impact statistics',
-    'small business technology overwhelm adoption barriers',
-    'SMB custom software ERP integration benefits ROI',
-    'Federal Reserve small business credit survey operational challenges 2025',
-    'SBA small business AI technology adoption trends 2025',
-    'HubSpot small business sales marketing technology report 2025',
-    'small business cash flow operational pressure technology report',
-    'SMB spreadsheet manual data errors cost productivity',
-    'small business SaaS adoption growth statistics USA',
-    'agentic AI workflow automation small business productivity gains',
-    'SMB tech debt incomplete software projects contractor failure',
+    # Industry-specific operational pain
+    'trucking logistics small fleet operations technology challenges',
+    'HVAC field service company operational management problems statistics',
+    'waste management route optimization technology adoption gap',
+    'construction company field data management challenges subcontractor',
+    'food distribution small business inventory software operational problems',
+    'pest control scheduling dispatch software challenges small business',
+    'field service company mobile workforce management barriers',
+    'service business quoting estimating manual process errors cost',
+    'small business developer abandoned incomplete custom software',
+    'delivery company driver scheduling dispatch technology problems',
+    # Pain statistics with real numbers
+    'small business manual processes labor cost productivity statistics',
+    'SMB data visibility reporting gap operational decisions statistics',
+    'small business payroll time tracking errors cost statistics',
+    'field service paper forms digital conversion ROI statistics',
+    'small business spreadsheet operational risk statistics report',
+    'SMB custom software ROI operational efficiency case study',
+    'agentic AI workflow automation small business productivity statistics',
+    'small business data pipeline reporting automation benefits ROI',
+    'SMB technology adoption barriers talent shortage statistics',
+    'small business tech debt operational systems integration cost',
 ]
 
 ZIMPLIXIO_SERVICES = """
@@ -79,11 +81,11 @@ def extract_insights(client: anthropic.Anthropic, search_results: list, query: s
 
     combined = combined[:6000]
 
-    prompt = f"""You are extracting SMB market insights for Zimplixio, a technology services company for small and medium businesses in the USA.
+    prompt = f"""You are extracting SMB market insights for Zimplixio, a technology contractor that helps operationally complex small businesses — trucking, field service, distribution, construction, pest control, and similar industries — replace manual processes with software that works.
 
 Search query that found this content: "{query}"
 
-From the search results below, extract 3-5 specific, credible insights or statistics about SMB challenges, technology adoption, AI use, automation, data management, or operational efficiency. Prioritize insights with real numbers or percentages. Skip vague or purely promotional content.
+From the search results below, extract 3-5 specific, credible insights or statistics about: operational pain in small businesses, manual process costs, scheduling and dispatch problems, data visibility gaps, payroll or time-tracking errors, failed software projects, or technology adoption barriers in non-glamorous industries. Prioritize insights with real numbers or percentages. Skip generic AI trend content or corporate enterprise content — focus on small business operational reality.
 
 For each insight, identify which Zimplixio service it is most relevant to:
 {ZIMPLIXIO_SERVICES}
@@ -143,6 +145,7 @@ def main():
             search_depth='advanced',
             max_results=5,
             include_answer=False,
+            days=30,
         )
         results = response.get('results', [])
         print(f"  Found {len(results)} results")
